@@ -7,8 +7,7 @@ class Container extends Component {
 
   render() {
     return (
-      <div>
-        <p>hello there container</p>
+      <div className="container">
       </div>
     )
   }
