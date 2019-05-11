@@ -1,4 +1,4 @@
-import React,{ Component } from 'react';
+import React, { Component } from 'react';
 
 import Container from './Container'
 
@@ -8,9 +8,10 @@ class Home extends Component {
   }
   render() {
     return (
-      <div>
+      <div className="home">
         <div>I'm the home app</div>
         <p>hello there</p>
+        <button onClick={() => console.log('hi there')}>Press Me!</button>
         <Container />
       </div>
     )

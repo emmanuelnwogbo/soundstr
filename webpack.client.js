@@ -10,7 +10,8 @@ const config = {
   //after build, and what the name of the output file should
   //be
   output: {
-    filename: '[name].[hash].js',
+    //filename: '[name].[hash].js',
+    filename: 'bundle.js',
     path: path.resolve(__dirname, 'public')
   }
 };
