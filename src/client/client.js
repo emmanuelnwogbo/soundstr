@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Home from './components/Home';
-import './scss/base.scss'
+import './scss/main.scss'
 
 ReactDOM.hydrate(<Home />, document.getElementById('root'))
