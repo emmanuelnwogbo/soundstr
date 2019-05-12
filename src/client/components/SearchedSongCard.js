@@ -13,9 +13,18 @@ class SearchedSongCard extends Component {
 
   render() {
     return (
-      <div className="songcard">
+      <div className="songcard songcard--searched">
         <figure className="songcard--fig" style={this.style}>
         </figure>
+        <div className="songcard--controls">
+          <svg className="songcard--controls-svg">
+            <use xlinkHref="./sprite.svg#icon-play2" />
+          </svg>
+        </div>
+        <div className="songcard--details">
+          <h3 className="songcard--details-h3">Song Name</h3>
+          <p className="songcard--details-name">Name of Artist</p>
+        </div>
       </div>
     )
   }

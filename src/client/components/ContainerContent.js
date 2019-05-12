@@ -27,7 +27,15 @@ class ContainerContent extends Component {
   render() {
     return (
       <div className="containercontent">
+        <div className="containercontent--header">
+          <h1 className="containercontent--h1">Top Trending</h1>
+          <p  className="containercontent--para">By {'artist name'}</p>
+        </div>
         {this.renderSearchedSongs()}
+        <div className="containercontent--header">
+          <h1 className="containercontent--h1">Recommended</h1>
+          <p className="containercontent--para">for you</p>
+        </div>
         {this.renderSongs()}
       </div>
     )

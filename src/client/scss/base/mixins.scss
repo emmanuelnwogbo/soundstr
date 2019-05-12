@@ -1,13 +1,8 @@
 @mixin songCardOverlay {
   @for $i from 1 through 21 {
-    &:nth-child(1) {
-			&::before {
-        background: rgba(253, 114, 114,.4);
-      }
-    }
     &:nth-child(2) {
 			&::before {
-        background: rgba(237, 76, 103,.4);
+        background: rgba(253, 114, 114,.4);
       }
     }
     &:nth-child(3) {
@@ -149,6 +144,16 @@
 			&::before {
         background: rgba(169, 50, 38,.4);
       }
-		}
+    }
+    &:nth-child(31) {
+			&::before {
+        background: rgba(237, 76, 103,.4);
+      }
+    }
+    &:nth-child(32) {
+			&::before {
+        background: rgba(247, 159, 31,.4);
+      }
+    }
   }
 }

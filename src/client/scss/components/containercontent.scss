@@ -3,8 +3,27 @@
   flex-wrap: wrap;
   padding: 9rem 3rem;
   padding-top: 12rem;
-  width: 85%;
+  width: 90%;
   margin: 0 auto;
+
+  &--header {
+    flex-basis: 100%;
+    padding: 2rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    color: #fff;
+  }
+
+  &--h1 {
+    font-weight: 900;
+    font-size: 2rem;
+  }
+
+  &--para {
+    opacity: .5;
+    font-weight: 700;
+    font-size: 1.5rem;
+  }
 
   &--searchedsongs {
     display: flex;
