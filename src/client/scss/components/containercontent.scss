@@ -1,0 +1,21 @@
+.containercontent {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 9rem 3rem;
+  padding-top: 12rem;
+  width: 93%;
+  margin: 0 auto;
+
+  &--searchedsongs {
+    display: flex;
+    /* flex-wrap: wrap; */
+    /* overflow: hidden; */
+    align-self: flex-start;
+    flex-basis: 100%;
+    padding: 0 .5rem;
+  }
+
+  & .songcard {
+    @include songCardOverlay
+  }
+}

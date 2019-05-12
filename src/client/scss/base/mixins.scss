@@ -1,0 +1,154 @@
+@mixin songCardOverlay {
+  @for $i from 1 through 21 {
+    &:nth-child(1) {
+			&::before {
+        background: rgba(253, 114, 114,.4);
+      }
+    }
+    &:nth-child(2) {
+			&::before {
+        background: rgba(237, 76, 103,.4);
+      }
+    }
+    &:nth-child(3) {
+			&::before {
+        background: rgba(153, 128, 250,.4);
+      }
+    }
+    &:nth-child(4) {
+			&::before {
+        background: rgba(214, 48, 49,.4);
+      }
+		}
+    &:nth-child(5) {
+			&::before {
+        background: rgba(253, 167, 223,.4);
+      }
+    }
+    &:nth-child(6) {
+			&::before {
+        background: rgba(18, 137, 167,.4);
+      }
+    }
+    &:nth-child(7) {
+			&::before {
+        background: rgba(0, 148, 50,.4);
+      }
+    }
+    &:nth-child(8) {
+			&::before {
+        background: rgba(60, 64, 198,.4);
+      }
+    }
+    &:nth-child(9) {
+			&::before {
+        background: rgba(214, 162, 232,.4);
+      }
+    }
+    &:nth-child(10) {
+			&::before {
+        background: rgba(88, 177, 159,.4);
+      }
+    }
+    &:nth-child(11) {
+			&::before {
+        background: rgba(85, 230, 193,.4);
+      }
+    }
+    &:nth-child(12) {
+			&::before {
+        background: rgba(99, 205, 218,.4);
+      }
+    }
+    &:nth-child(13) {
+			&::before {
+        background: rgba(248, 165, 194,.4);
+      }
+    }
+    &:nth-child(14) {
+			&::before {
+        background: rgba(120, 111, 166,.4);
+      }
+    }
+    &:nth-child(15) {
+			&::before {
+        background: rgba(250, 128, 114, .4);
+      }
+    }
+    &:nth-child(16) {
+			&::before {
+        background: rgba(187, 143, 206,.4);
+      }
+    }
+    &:nth-child(17) {
+			&::before {
+        background: rgba(247, 241, 227,.4);
+      }
+    }
+    &:nth-child(18) {
+			&::before {
+        background: rgba(44, 44, 84,.4);
+      }
+    }
+    &:nth-child(19) {
+			&::before {
+        background: rgba(52, 172, 224,.4);
+      }
+    }
+    &:nth-child(20) {
+			&::before {
+        background: rgba(85, 230, 193,.4);
+      }
+    }
+    &:nth-child(21) {
+			&::before {
+        background: rgba(248, 239, 186,.4);
+      }
+    }
+    &:nth-child(22) {
+			&::before {
+        background: rgba(234, 32, 39,.4);
+      }
+    }
+    &:nth-child(23) {
+			&::before {
+        background: rgba(163, 203, 56,.4);
+      }
+    }
+    &:nth-child(24) {
+			&::before {
+        background: rgba(0, 98, 102,.4);
+      }
+    }
+    &:nth-child(25) {
+			&::before {
+        background: rgba(169, 223, 191,.4);
+      }
+    }
+    &:nth-child(26) {
+			&::before {
+        background: rgba(33, 97, 140,.4);
+      }
+    }
+    &:nth-child(27) {
+			&::before {
+        background: rgba(212, 230, 241,.4);
+      }
+    }
+    &:nth-child(28) {
+			&::before {
+        background: rgba(22, 160, 133,.4);
+      }
+    }
+    &:nth-child(29) {
+			&::before {
+        background: rgba(155, 89, 182,.4);
+      }
+    }
+    &:nth-child(30) {
+			&::before {
+        background: rgba(169, 50, 38,.4);
+      }
+		}
+  }
+}

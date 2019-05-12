@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 
 import Container from './Container';
 import PlayerBar from './PlayerBar';
-import Header from './Header';
-import Sidenav from './Sidenav';
 
 class Home extends Component {
   constructor(props) {
@@ -12,8 +10,6 @@ class Home extends Component {
   render() {
     return (
       <div className="home">
-        <Header />
-        <Sidenav />
         <Container />
         <PlayerBar />
       </div>

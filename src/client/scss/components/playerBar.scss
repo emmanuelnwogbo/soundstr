@@ -2,8 +2,9 @@
   position: fixed;
   bottom: 0;
   left: 0;
-  height: 6rem;
+  height: 7rem;
   width: 100%;
-  background: green;
+  background: linear-gradient(to right, #2C2C94, #130F1D);
   z-index: 3000;
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.4);
 }
