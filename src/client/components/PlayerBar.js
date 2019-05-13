@@ -3,21 +3,22 @@ import React, { Component } from 'react';
 class PlayerBar extends Component {
   constructor() {
     super();
-    this.style = {
-      backgroundImage: 'url(https://res.cloudinary.com/dxlhzerlq/image/upload/q_100/v1545772572/images_zjglmv.jpg)',
-      backgroundSize: 'cover',
-      backgroundPosition: 'top'
-    }
+    this.state = {};
   }
 
   render() {
+    const { currentArtist } = this.props;
     return (
       <div className="playerbar">
         <div className="playerbar--meta">
-          <figure className="playerbar--figure" style={this.style}></figure>
+          <figure className="playerbar--figure" style={{
+            backgroundImage: `url(${currentArtist.artist_albumart_link})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'top'
+          }}></figure>
           <div className="playerbar--details">
-            <p className="playerbar--para-1">{'nameofSong'}</p>
-            <p className="playerbar--para-2">{'name of Artist'}</p>
+            <p className="playerbar--para-1">{currentArtist.artist_songname}</p>
+            <p className="playerbar--para-2">{currentArtist.artist_name}</p>
           </div>
         </div>
 

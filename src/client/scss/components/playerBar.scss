@@ -4,7 +4,7 @@
   left: 0;
   min-height: 7rem;
   width: 100%;
-  background: linear-gradient(to right, #2C2C94, #130F1D);
+  background: linear-gradient(to right, rgba(44, 44, 84,1.0), #130F1D);
   z-index: 3000;
   box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.4);
   display: flex;
@@ -15,7 +15,8 @@
   &--meta {
     height: 5rem;
     display: flex;
-    margin-right: 27rem;
+    width: 26%;
+    overflow: hidden;
   }
 
   &--figure {
