@@ -48,7 +48,6 @@ class SongCard extends Component {
   }
 
   render() {
-    console.log(this.props)
     return (
       <div className="songcard">
         <figure className="songcard--fig">

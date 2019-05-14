@@ -58,13 +58,13 @@ class PlayerBar extends Component {
           <svg className="playerbar--controls-svg">
             <use xlinkHref="./sprite.svg#icon-shuffle1" />
           </svg>
-          <svg className="playerbar--controls-svg">
+          <svg className="playerbar--controls-svg" onClick={this.props.prevSong}>
             <use xlinkHref="./sprite.svg#icon-previous2" />
           </svg>
           <div className="playerbar--controls-playpausebackground">
             {this.renderPlayPauseBtn()}
           </div>
-          <svg className="playerbar--controls-svg">
+          <svg className="playerbar--controls-svg" onClick={this.props.nextSong}>
             <use xlinkHref="./sprite.svg#icon-next2" />
           </svg>
           <svg className="playerbar--controls-svg">
