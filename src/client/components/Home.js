@@ -12,6 +12,8 @@ class Home extends Component {
       audioComponent: null,
       artists: artists,
       currentArtist: artists[0],
+      currentSongId: artists[0].id,
+      currentSong: null,
       songPlaying: false
     }
   }
@@ -21,16 +23,45 @@ class Home extends Component {
       return this.setState({ 
         currentArtist,
         songPlaying: true
-      });
+      }, this.playSong);
     }
 
     if (this.state.songPlaying) {
-      return this.setState({ songPlaying: false })
+      return this.setState({ songPlaying: false }, this.playSong)
     }
 
     if (!this.state.songPlaying) {
-      return this.setState({ songPlaying: true })
+      return this.setState({ songPlaying: true }, this.playSong)
     }
+  }
+
+  playSong = () => {
+    const { 
+      currentArtist, 
+      currentSong, 
+      currentSongId, 
+      songPlaying 
+    } = this.state;
+    
+    if (songPlaying) {
+      console.log('play song')
+      if (currentArtist.id !== currentSongId) {
+        currentSong.pause();
+        return this.setState(prevState => ({
+          currentSongId: prevState.currentArtist.id,
+          currentSong: document.getElementById(prevState.currentArtist.id)
+        }), () => {
+          const { currentSong } = this.state;
+          currentSong.play();
+        }); 
+      }
+  
+      currentSong.play();
+      return;
+    }
+
+    currentSong.pause();
+    console.log('pause song', songPlaying)
   }
 
   renderAudioTags = () => {
@@ -43,14 +74,17 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    /*this.props.window.onload = () => {
-      console.log(this);
+    this.props.window.onload = () => {
       import('./Audio').then(
         Audio => this.setState({
           audioComponent: Audio.default
+        }, () => {
+          this.setState(prevState => ({
+            currentSong: document.getElementById(prevState.currentArtist.id)
+          }))
         })
       )
-    }*/
+    }
   }
 
   render() {
