@@ -35,6 +35,10 @@ class Home extends Component {
     }
   }
 
+  endSong = () => {
+    this.setState({ songPlaying: false })
+  }
+
   playSong = () => {
     const { 
       currentArtist, 
@@ -52,11 +56,17 @@ class Home extends Component {
           currentSong: document.getElementById(prevState.currentArtist.id)
         }), () => {
           const { currentSong } = this.state;
-          currentSong.play();
+          currentSong.play().then(() => {
+            currentSong.addEventListener('ended', () => {
+              this.endSong();
+            })
+          });
         }); 
       }
   
-      currentSong.play();
+      currentSong.play().then(() => {
+        console.log('song playing')
+      });
       return;
     }
 
@@ -81,7 +91,12 @@ class Home extends Component {
         }, () => {
           this.setState(prevState => ({
             currentSong: document.getElementById(prevState.currentArtist.id)
-          }))
+          }), () => {
+            const { currentSong } = this.state;
+            currentSong.addEventListener('ended', () => {
+              this.endSong();
+            })
+          })
         })
       )
     }
