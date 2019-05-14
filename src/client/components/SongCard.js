@@ -10,8 +10,6 @@ class SongCard extends Component {
 
   playSong = () => {
     this.props.playerBarStateController(this.state.artist);
-    //console.log(this.props);
-    //console.log('inside songcard', this.state)
   }
 
   renderPlayPauseBtn = () => {
@@ -31,13 +29,26 @@ class SongCard extends Component {
     }
   }
 
+  renderPlayingFeedBack = () => {
+    if (this.state.artist !== null && this.state.artist.id === this.props.currentArtist.id && this.props.songPlaying) {
+      return (
+        <div className="songcard--playbackfeedback">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      )
+    }
+    return;
+  }
+
   componentDidMount() {
     const { artist } = this.props
     this.setState({ artist })
   }
 
   render() {
-    //console.log(this.props)
+    console.log(this.props)
     return (
       <div className="songcard">
         <figure className="songcard--fig">
@@ -50,6 +61,7 @@ class SongCard extends Component {
           <h3 className="songcard--details-h3">{this.props.artist.artist_songname}</h3>
           <p className="songcard--details-name">{this.props.artist.artist_name}</p>
         </div>
+        {this.renderPlayingFeedBack()}
       </div>
     )
   }
