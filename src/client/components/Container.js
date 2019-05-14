@@ -12,7 +12,7 @@ class Container extends Component {
     return (
       <div className="container">
         <Header />
-        <ContainerContent playerBarStateController={this.props.playerBarStateController} artists={this.props.artists}/>
+        <ContainerContent songPlaying={this.props.songPlaying}  currentArtist={this.props.currentArtist} playerBarStateController={this.props.playerBarStateController} artists={this.props.artists}/>
       </div>
     )
   }

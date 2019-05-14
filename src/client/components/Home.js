@@ -11,20 +11,26 @@ class Home extends Component {
     this.state = {
       audioComponent: null,
       artists: artists,
-      currentArtist: artists[0]
+      currentArtist: artists[0],
+      songPlaying: false
     }
   }
 
   playerBarStateController = (currentArtist) => {
-      //import('./Audio').then(Audio => console.log(<Audio.default />))
-    import('./Audio').then(
-      Audio => this.setState({
-         audioComponent: Audio.default,
-         currentArtist
-        }, () => {
-          console.log(document.getElementById(this.state.currentArtist.id))
-          document.getElementById(this.state.currentArtist.id).play();
-        }));
+    if (this.state.currentArtist !== currentArtist) {
+      return this.setState({ 
+        currentArtist,
+        songPlaying: true
+      });
+    }
+
+    if (this.state.songPlaying) {
+      return this.setState({ songPlaying: false })
+    }
+
+    if (!this.state.songPlaying) {
+      return this.setState({ songPlaying: true })
+    }
   }
 
   renderAudioTags = () => {
@@ -36,12 +42,23 @@ class Home extends Component {
     return;
   }
 
+  componentDidMount() {
+    /*this.props.window.onload = () => {
+      console.log(this);
+      import('./Audio').then(
+        Audio => this.setState({
+          audioComponent: Audio.default
+        })
+      )
+    }*/
+  }
+
   render() {
     return (
       <div className="home">
         {this.renderAudioTags()}
-        <Container playerBarStateController={this.playerBarStateController} artists={this.state.artists}/>
-        <PlayerBar currentArtist={this.state.currentArtist}/>
+        <Container songPlaying={this.state.songPlaying} currentArtist={this.state.currentArtist} playerBarStateController={this.playerBarStateController} artists={this.state.artists}/>
+        <PlayerBar songPlaying={this.state.songPlaying} currentArtist={this.state.currentArtist} playerBarStateController={this.playerBarStateController}/>
       </div>
     )
   }

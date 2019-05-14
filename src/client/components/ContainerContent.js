@@ -15,7 +15,7 @@ class ContainerContent extends Component {
   renderSongs = () => {
     if (this.state.artists !== null) {
       return this.state.artists.map(artist => {
-        return <SongCard playerBarStateController={this.props.playerBarStateController} key={artist.id} artist={artist}/>
+        return <SongCard songPlaying={this.props.songPlaying} currentArtist={this.props.currentArtist} playerBarStateController={this.props.playerBarStateController} key={artist.id} artist={artist}/>
       })
     }
     return;

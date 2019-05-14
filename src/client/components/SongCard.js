@@ -10,7 +10,25 @@ class SongCard extends Component {
 
   playSong = () => {
     this.props.playerBarStateController(this.state.artist);
-    console.log(this.props);
+    //console.log(this.props);
+    //console.log('inside songcard', this.state)
+  }
+
+  renderPlayPauseBtn = () => {
+    if (this.state.artist !== null && this.state.artist.id === this.props.currentArtist.id && this.props.songPlaying) {
+      return (
+        <svg className="songcard--controls-svg" onClick={this.playSong}>
+          <use xlinkHref="./sprite.svg#icon-pause" />
+        </svg>
+      )
+    }
+    else {
+      return (
+        <svg className="songcard--controls-svg" onClick={this.playSong}>
+          <use xlinkHref="./sprite.svg#icon-play2" />
+        </svg>
+      )
+    }
   }
 
   componentDidMount() {
@@ -19,15 +37,14 @@ class SongCard extends Component {
   }
 
   render() {
+    //console.log(this.props)
     return (
       <div className="songcard">
         <figure className="songcard--fig">
           <img className="songcard--img" src={this.props.artist.artist_albumart_link}/>
         </figure>
         <div className="songcard--controls">
-          <svg className="songcard--controls-svg" onClick={this.playSong}>
-            <use xlinkHref="./sprite.svg#icon-play2" />
-          </svg>
+          {this.renderPlayPauseBtn()}
         </div>
         <div className="songcard--details">
           <h3 className="songcard--details-h3">{this.props.artist.artist_songname}</h3>

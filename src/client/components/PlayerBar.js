@@ -6,6 +6,27 @@ class PlayerBar extends Component {
     this.state = {};
   }
 
+  playSong = () => {
+    this.props.playerBarStateController(this.props.currentArtist);
+    //console.log(this.props);
+    //console.log('inside songcard', this.state)
+  }
+
+  renderPlayPauseBtn = () => {
+    if (this.props.songPlaying) {
+      return (
+        <svg className="playerbar--controls-svg playerbar--controls-svgplaypause" onClick={this.playSong}>
+          <use xlinkHref="./sprite.svg#icon-pause" />
+        </svg>
+      )
+    }
+    return (
+      <svg className="playerbar--controls-svg playerbar--controls-svgplaypause" onClick={this.playSong}>
+        <use xlinkHref="./sprite.svg#icon-play2" />
+      </svg>
+    )
+  }
+
   render() {
     const { currentArtist } = this.props;
     return (
@@ -41,9 +62,7 @@ class PlayerBar extends Component {
             <use xlinkHref="./sprite.svg#icon-previous2" />
           </svg>
           <div className="playerbar--controls-playpausebackground">
-            <svg className="playerbar--controls-svg playerbar--controls-svgplaypause">
-              <use xlinkHref="./sprite.svg#icon-play2" />
-            </svg>
+            {this.renderPlayPauseBtn()}
           </div>
           <svg className="playerbar--controls-svg">
             <use xlinkHref="./sprite.svg#icon-next2" />

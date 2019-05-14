@@ -13,7 +13,7 @@ class SearchedSongCard extends Component {
 
   render() {
     return (
-      <div className="songcard songcard--searched">
+      <div className="songcard">
         <figure className="songcard--fig" style={this.style}>
         </figure>
         <div className="songcard--controls">
