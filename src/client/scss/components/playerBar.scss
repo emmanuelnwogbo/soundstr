@@ -4,7 +4,7 @@
   left: 0;
   min-height: 7rem;
   width: 100%;
-  background: linear-gradient(to right, rgba(44, 44, 84,1.0), #130F1D);
+  background: linear-gradient(to right, #2c2c54, #130F1D);
   z-index: 3000;
   box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.4);
   display: flex;
@@ -64,6 +64,10 @@
     border-radius: 50%;
     background: #fff;
     cursor: pointer;
+
+    &:hover {
+      background: rgba(214, 48, 49,1.0);
+    }
   }
 
   &--progressbar {
@@ -77,10 +81,6 @@
 
   }
 
-  &--progressbarhandle {
-
-  }
-
   &--progressnumbers {
     opacity: .7;
   }
@@ -91,7 +91,7 @@
     width: 4rem;
     border-radius: 50%;
     box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.4);
-    background: rgba(112, 161, 255,1.0);
+    background: linear-gradient(to right, #302B63, #0F0C29);
   }
 
   &--controls {
@@ -106,6 +106,10 @@
       width: 2rem;
       fill: rgba(255, 255, 255, 0.7);
       cursor: pointer;
+
+      &:hover {
+        fill: rgba(214, 48, 49,1.0);
+      }
     }
 
     &-svgplaypause {
@@ -116,6 +120,10 @@
       width: 4rem;
       fill: rgba(255, 255, 255, 0.7);
       cursor: pointer;
+    }
+
+    &-svg-colored {
+      fill: rgba(214, 48, 49,1.0);
     }
   }
 
@@ -132,6 +140,10 @@
       border-radius: 50%;
       background: #fff;
       cursor: pointer;
+
+      &:hover {
+        background: rgba(214, 48, 49,1.0);
+      }
     }
 
     &-progress-parent {

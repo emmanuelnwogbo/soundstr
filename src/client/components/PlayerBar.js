@@ -8,8 +8,42 @@ class PlayerBar extends Component {
 
   playSong = () => {
     this.props.playerBarStateController(this.props.currentArtist);
-    //console.log(this.props);
-    //console.log('inside songcard', this.state)
+  }
+
+  playNextSong = () => {
+    this.props.manuallyMoveToNextSong();
+  }
+
+  renderShuffleBtn = () => {
+    if (this.props.shuffle) {
+      return (
+        <svg className="playerbar--controls-svg playerbar--controls-svg-colored" onClick={this.props.shuffleSong}>
+          <use xlinkHref="./sprite.svg#icon-shuffle1" />
+        </svg>
+      )
+    }
+
+    return (
+      <svg className="playerbar--controls-svg" onClick={this.props.shuffleSong}>
+        <use xlinkHref="./sprite.svg#icon-shuffle1" />
+      </svg>
+    )
+  }
+
+  renderLoopBtn = () => {
+    if (this.props.loop) {
+      return (
+        <svg className="playerbar--controls-svg  playerbar--controls-svg-colored" onClick={this.props.loopSong}>
+          <use xlinkHref="./sprite.svg#icon-loop1" />
+        </svg>
+      )
+    }
+
+    return (
+      <svg className="playerbar--controls-svg" onClick={this.props.loopSong}>
+        <use xlinkHref="./sprite.svg#icon-loop1" />
+      </svg>
+    )
   }
 
   renderPlayPauseBtn = () => {
@@ -55,21 +89,17 @@ class PlayerBar extends Component {
         </div>
 
         <div className="playerbar--controls">
-          <svg className="playerbar--controls-svg">
-            <use xlinkHref="./sprite.svg#icon-shuffle1" />
-          </svg>
+          {this.renderShuffleBtn()}
           <svg className="playerbar--controls-svg" onClick={this.props.prevSong}>
             <use xlinkHref="./sprite.svg#icon-previous2" />
           </svg>
           <div className="playerbar--controls-playpausebackground">
             {this.renderPlayPauseBtn()}
           </div>
-          <svg className="playerbar--controls-svg" onClick={this.props.nextSong}>
+          <svg className="playerbar--controls-svg" onClick={this.playNextSong}>
             <use xlinkHref="./sprite.svg#icon-next2" />
           </svg>
-          <svg className="playerbar--controls-svg">
-            <use xlinkHref="./sprite.svg#icon-loop1" />
-          </svg>
+          {this.renderLoopBtn()}
         </div>
 
         <div className="playerbar--volume">

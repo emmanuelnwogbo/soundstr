@@ -10,13 +10,15 @@ class Home extends Component {
     super(props);
     this.state = {
       audioComponent: null,
-      //artists: artists,
       spotifyArtistsSongs: [],
       cloudinaryArtists: artists,
       currentArtist: artists[0],
       currentSongId: artists[0].id,
       currentSong: null,
-      songPlaying: false
+      songPlaying: false,
+      loop: false,
+      shuffle: false,
+      manuallyMoveToNextSong: false,
     }
   }
 
@@ -37,6 +39,33 @@ class Home extends Component {
     }
   }
 
+  updateSongTime = () => {
+
+  }
+
+  shuffleSong = () => {
+    if (this.state.shuffle) {
+      return this.setState({ shuffle: false })
+    }
+    
+    this.setState({ shuffle: true })
+  }
+
+  manuallyMoveToNextSong = () => {
+    this.setState({ manuallyMoveToNextSong: true }, () => {
+      this.nextSong();
+      this.setState({ manuallyMoveToNextSong: false })
+    })
+  }
+
+  loopSong = () => {
+    if (this.state.loop) {
+      return this.setState({ loop: false })
+    }
+
+    this.setState({ loop: true })
+  }
+
   prevSong = () => {
     const { currentArtist, cloudinaryArtists } = this.state;
     if (cloudinaryArtists.includes(currentArtist)) {
@@ -47,7 +76,6 @@ class Home extends Component {
       return this.setState({
          currentArtist: result[result.length-1]
         }, () => {
-          //console.log(this.state);
           this.playSong()
         })
     }
@@ -55,22 +83,49 @@ class Home extends Component {
 
   nextSong = () => {
     const { currentArtist, cloudinaryArtists } = this.state;
+    if (!this.state.manuallyMoveToNextSong && this.state.loop) {
+      return this.playSong();
+    }
+    if (!this.state.manuallyMoveToNextSong && this.state.shuffle) {
+      if (cloudinaryArtists.includes(currentArtist)) {
+        const nextArtist = cloudinaryArtists[Math.floor(Math.random()*cloudinaryArtists.length)];
+        return this.setState({
+          currentArtist: nextArtist
+        }, () => {
+          this.playSong();
+        })
+      }
+      return;
+    }
     if (cloudinaryArtists.includes(currentArtist)) {
       if (cloudinaryArtists.indexOf(currentArtist) === cloudinaryArtists.length-1) {
-        return console.log('this is the last element in the array')
+        return this.endSong();
       }
       const result = cloudinaryArtists.filter(artist => cloudinaryArtists.indexOf(artist) > cloudinaryArtists.indexOf(currentArtist));
       return this.setState({
          currentArtist: result[0]
         }, () => {
-          //console.log(this.state);
           this.playSong()
         })
     }
   }
 
   endSong = () => {
-    this.setState({ songPlaying: false })
+    const { 
+      currentArtist,
+      cloudinaryArtists
+    } = this.state;
+    if (cloudinaryArtists.includes(currentArtist)) {
+      return this.setState({
+        currentArtist: artists[0],
+        currentSongId: artists[0].id,
+        songPlaying: false
+      }, () => {
+        this.setState(prevState => ({
+          currentSong: document.getElementById(prevState.currentArtist.id)
+        }))
+      })
+    }
   }
 
   playSong = () => {
@@ -83,7 +138,6 @@ class Home extends Component {
     
     if (songPlaying) {
       if (currentArtist.id !== currentSongId) {
-        //console.log('different song')
         currentSong.load();
         return this.setState(prevState => ({
           currentSongId: prevState.currentArtist.id,
@@ -91,15 +145,16 @@ class Home extends Component {
         }), () => {
           const { currentSong } = this.state;
           currentSong.play().then(() => {
+            console.log(this.state)
             currentSong.addEventListener('ended', () => {
-              this.endSong();
+              this.nextSong();
             })
           });
         }); 
       }
   
       currentSong.play().then(() => {
-        //console.log(this.state)
+        console.log(this.state)
         //console.log('song playing')
       });
       return;
@@ -111,7 +166,12 @@ class Home extends Component {
   renderAudioTags = () => {
     if (this.state.audioComponent !== null) {
       return this.state.cloudinaryArtists.map(artist => {
-        return <this.state.audioComponent song={artist.artist_songlink} id={artist.id}/>
+        //prod code
+        //return <this.state.audioComponent song={artist.artist_songlink} id={artist.id}/>
+        //dev code 
+          if (artist.id === '1') {
+            return <this.state.audioComponent song={artist.artist_songlink} id={artist.id}/>
+          }
       })
     }
     return;
@@ -128,7 +188,7 @@ class Home extends Component {
           }), () => {
             const { currentSong } = this.state;
             currentSong.addEventListener('ended', () => {
-              this.endSong();
+              this.nextSong();
             })
           })
         })
@@ -141,7 +201,7 @@ class Home extends Component {
       <div className="home">
         {this.renderAudioTags()}
         <Container songPlaying={this.state.songPlaying} currentArtist={this.state.currentArtist} playerBarStateController={this.playerBarStateController} artists={this.state.cloudinaryArtists}/>
-        <PlayerBar nextSong={this.nextSong} prevSong={this.prevSong} songPlaying={this.state.songPlaying} currentArtist={this.state.currentArtist} playerBarStateController={this.playerBarStateController}/>
+        <PlayerBar shuffle={this.state.shuffle} shuffleSong={this.shuffleSong} manuallyMoveToNextSong={this.manuallyMoveToNextSong} loopSong={this.loopSong} loop={this.state.loop} nextSong={this.nextSong} prevSong={this.prevSong} songPlaying={this.state.songPlaying} currentArtist={this.state.currentArtist} playerBarStateController={this.playerBarStateController}/>
       </div>
     )
   }
