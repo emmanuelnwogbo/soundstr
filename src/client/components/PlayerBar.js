@@ -61,8 +61,13 @@ class PlayerBar extends Component {
     )
   }
 
+  componentDidMount() {
+    this.props.setPlayerProgressHandle();
+  }
+
   render() {
-    const { currentArtist } = this.props;
+    const { currentArtist, currentSongTime } = this.props;
+    const { duration, progress } = currentSongTime;
     return (
       <div className="playerbar">
         <div className="playerbar--meta">
@@ -78,14 +83,14 @@ class PlayerBar extends Component {
         </div>
 
         <div className="playerbar--progress">
-          <p className="playerbar--progressnumbers">0:00</p>
-          <div className="playerbar--progressbar-parent">
-            <span className="playerbar--progressbar-handle"></span>
+          <p className="playerbar--progressnumbers">{progress}</p>
+          <div id="playerbar--progressbar-parent" className="playerbar--progressbar-parent">
+            <span id='playerbar--progressbar-handle' className="playerbar--progressbar-handle"></span>
             <div className="playerbar--progressbar">
               <div className="playerbar--progressbargrowth"></div>
             </div>
           </div>
-          <p className="playerbar--progressnumbers">0:00</p>
+          <p className="playerbar--progressnumbers">{duration}</p>
         </div>
 
         <div className="playerbar--controls">
