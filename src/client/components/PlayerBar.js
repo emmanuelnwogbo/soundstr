@@ -63,6 +63,7 @@ class PlayerBar extends Component {
 
   componentDidMount() {
     this.props.setPlayerProgressHandle();
+    this.props.setVolumeProgressHandle();
   }
 
   render() {
@@ -111,8 +112,8 @@ class PlayerBar extends Component {
           <svg className="playerbar--volume-svg">
             <use xlinkHref="./sprite.svg#icon-plus1" />
           </svg>
-          <div className="playerbar--volume-progress-parent">
-            <span className="playerbar--volume-handle"></span>
+          <div id="playerbar--volume-progress-parent" className="playerbar--volume-progress-parent">
+            <span id="playerbar--volume-handle" className="playerbar--volume-handle"></span>
             <div className="playerbar--volume-progress">
               <div className="playerbar--volume-progressgrowth"></div>
             </div>
