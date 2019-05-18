@@ -1,5 +1,7 @@
 import React, {  Component } from 'react';
 
+import '../scss/components/songcard.scss';
+
 class SongCard extends Component {
   constructor(props) {
     super(props);
@@ -9,7 +11,10 @@ class SongCard extends Component {
   }
 
   playSong = () => {
-    this.props.playerBarStateController(this.state.artist);
+    //this.props.playerBarStateController(this.state.artist);
+    this.props.importFunction(`playerBarStateControl`, {
+      currentArtist: this.state.artist
+    })
   }
 
   renderPlayPauseBtn = () => {

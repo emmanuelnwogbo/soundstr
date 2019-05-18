@@ -7,7 +7,10 @@ class PlayerBar extends Component {
   }
 
   playSong = () => {
-    this.props.playerBarStateController(this.props.currentArtist);
+    //this.props.playerBarStateController(this.props.currentArtist);
+    this.props.importFunction(`playerBarStateControl`, {
+      currentArtist: this.props.currentArtist
+    })
   }
 
   playNextSong = () => {

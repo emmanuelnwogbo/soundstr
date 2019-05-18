@@ -11,11 +11,9 @@ class Audio extends Component {
   render() {
     const { song, id } = this.props;
     return (
-      <div>
-        <audio controls="controls" id={id}>
-          <source src={song} type="audio/mp3" />
-        </audio>
-      </div>
+      <audio controls="controls" id={id} preload="auto">
+        <source src={song} type="audio/mp3" />
+      </audio>
     )
   }
 }

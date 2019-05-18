@@ -1,6 +1,5 @@
 import React, {  Component } from 'react';
 
-import SongCard from './SongCard';
 import SearchedSongCard from './SearchedSongCard';
 
 class ContainerContent extends Component {
@@ -13,9 +12,31 @@ class ContainerContent extends Component {
   }
 
   renderSongs = () => {
+    const SongCard = this.props.lazy(() => import('./SongCard'));
+    const Suspense = this.props.Suspense;
     if (this.state.artists !== null) {
       return this.state.artists.map(artist => {
-        return <SongCard songPlaying={this.props.songPlaying} currentArtist={this.props.currentArtist} playerBarStateController={this.props.playerBarStateController} key={artist.id} artist={artist}/>
+        return (
+          <Suspense fallback={
+            <div style={{
+              flexBasis: '18rem',
+              height: '18rem',
+              margin:' 1rem 1.5rem',
+              background: '#000000',
+              opacity: '.4',
+              borderRadius: '.5rem'
+            }}>
+            </div>
+          }>
+            <SongCard 
+            songPlaying={this.props.songPlaying} 
+            currentArtist={this.props.currentArtist} 
+            importFunction={this.props.importFunction} 
+            key={artist.id} 
+            artist={artist}
+            />
+          </Suspense>
+        )
       })
     }
     return;
@@ -39,7 +60,7 @@ class ContainerContent extends Component {
           <h1 className="containercontent--h1">Top Trending</h1>
           <p  className="containercontent--para">By {'artist name'}</p>
         </div>
-        {this.renderSearchedSongs()}
+        {/*this.renderSearchedSongs()*/}
         <div className="containercontent--header">
           <h1 className="containercontent--h1">Recommended</h1>
           <p className="containercontent--para">for you</p>
