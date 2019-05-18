@@ -62,8 +62,8 @@ class PlayerBar extends Component {
   }
 
   componentDidMount() {
-    this.props.setPlayerProgressHandle();
-    this.props.setVolumeProgressHandle();
+    //this.props.setPlayerProgressHandle();
+    //this.props.setVolumeProgressHandle();
   }
 
   render() {

@@ -11,6 +11,7 @@
   align-items: center;
   color: #fff;
   padding: 1rem 2.1rem;
+  transition:  all .1s ease-in-out;
 
   &--meta {
     height: 5rem;
@@ -54,6 +55,7 @@
     margin: 0 1.2rem;
     cursor: pointer;
     background: transparent;
+    transition:  all .1s ease-in-out;
   }
 
   &--progressbar-handle {
@@ -66,7 +68,7 @@
     background: #fff;
     cursor: pointer;
     box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.4);
-    transition:  all .2s ease-in-out;
+    transition:  all .1s ease-in-out;
 
     &:hover {
       background: rgba(214, 48, 49,1.0);
@@ -145,7 +147,7 @@
       background: #fff;
       cursor: pointer;
       box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.4);
-      transition:  all .2s ease-in-out;
+      transition:  all .1s ease-in-out;
 
       &:hover {
         background: rgba(214, 48, 49,1.0);
@@ -158,6 +160,7 @@
       margin: 0 1.2rem;
       padding: 1rem 0;
       cursor: pointer;
+      transition:  all .1s ease-in-out;
       //background: red;
     }
 
