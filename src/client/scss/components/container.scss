@@ -1,4 +1,5 @@
 .container {
+  margin-top: 2.5rem;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(18rem, 18rem));
   grid-template-rows: repeat(auto-fit, minmax(1.5rem, 1.5rem));
@@ -17,7 +18,8 @@
     display: flex;
     align-items: center;
     background: linear-gradient(to right, #302B63, #0F0C29);
-
+    padding: 1rem; 
+    
     &__name {
       color: rgba(214, 48, 49,1.0);
       margin: 0 3rem;
@@ -102,7 +104,7 @@
     height: 50rem;
     grid-row: span 32;
     position: relative;
-    border-radius: 3rem;
+    border-radius: 3rem 0 3rem 0;
     overflow: hidden;
     display: flex;
     justify-content: center;
@@ -149,17 +151,19 @@
         text-align: center;
         position: relative;
         z-index: 20;
+        box-shadow: 0 1rem 2rem 2rem rgba(0, 0, 0, 0.4);
+        background: #000000;
+        padding: 0 3rem;
+        margin-bottom: 1rem;
+        border-radius: .3rem 3rem;
       }
 
       &--h3-name {
         position: absolute;
         top: 0;
         left: 0;
-        padding: 2rem 5rem;
-        font-size: 2.3rem;
-        background: #000000;
         border-radius: .3rem 0 3rem;
-        box-shadow: 0 1rem 2rem 2rem rgba(0, 0, 0, 0.4);
+        padding: 1rem 3rem;
       }
 
       & span {
@@ -168,6 +172,7 @@
         padding: .3rem 1rem;
         background: #d63031;
         border-radius: 3rem;
+        box-shadow: 0 1rem 2rem 2rem rgba(0, 0, 0, 0.4);
       }
     }
 
