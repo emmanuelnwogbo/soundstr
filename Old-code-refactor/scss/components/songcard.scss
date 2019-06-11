@@ -4,6 +4,8 @@
   height: 24rem;
   margin: 1rem 1.5rem;
   cursor: pointer;
+  border-radius: .3rem 3rem .3rem .3rem;
+  overflow: hidden;
 
   &--searched {
     flex-basis: 26.3rem;

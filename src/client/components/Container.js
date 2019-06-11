@@ -3,6 +3,7 @@ import axios from "axios";
 
 import artists from '../../db';
 import '../scss/components/container.scss'
+import rainbowGenerator from '../../helpers/rainbow';
 
 import Board from './Board';
 import SongCard from './SongCard';
@@ -13,12 +14,25 @@ class Container extends Component {
     this.state = {
       recommendedArtists: artists,
       searchedTracks: [],
-      boardData: null
+      boardData: null,
+      searchTerm: 'meg'
+    }
+  }
+
+  setSearchTerm = (event) => {
+    if (event.key === 'Enter') {
+      this.setState({
+        searchTerm: event.target.value,
+        searchedTracks: []
+      }, () => {
+        this.fetchArtist();
+      })
     }
   }
 
   fetchArtist = async () => {
-    const res = await axios.get(`https://spotify-api-wrapper.appspot.com/artist/meg`);
+    const { searchTerm } = this.state;
+    const res = await axios.get(`https://spotify-api-wrapper.appspot.com/artist/${searchTerm}`);
     if (res.data.artists.items) {
       this.setState({
         boardData: res.data.artists.items[0]
@@ -27,7 +41,6 @@ class Container extends Component {
         axios.get( `https://spotify-api-wrapper.appspot.com/artist/${
           boardData.id
         }/top-tracks`).then(res => {
-          //console.log(res)
           if (res.data.tracks) {
             this.setState({
               searchedTracks: res.data.tracks
@@ -44,9 +57,26 @@ class Container extends Component {
 
   rendersearchedTracks = () => {
     const { searchedTracks } = this.state;
+    if (searchedTracks.length === 0) {
+      return (
+        <div className={`container__loading`}>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      )
+    }
     return searchedTracks.map(track => {
       return (
-        <SongCard key={track.id} track={track}/>
+        <SongCard 
+        key={track.id} 
+        track={track}
+        overlay={rainbowGenerator(
+          Math.round(Math.random() * 100), 
+          Math.round(Math.random() * 80)
+        )}
+        />
       )
     })
   }
@@ -55,14 +85,26 @@ class Container extends Component {
     const { recommendedArtists } = this.state;
     return recommendedArtists.map(artist => {
       return (
-        <SongCard key={artist.id} artist={artist}/>
+        <SongCard 
+        key={artist.id} 
+        artist={artist}
+        overlay={rainbowGenerator(
+          Math.round(Math.random() * 100), 
+          Math.round(Math.random() * 80)
+        )}
+        />
       )
     })
   }
 
   renderBoard = () => {
     if (this.state.boardData !== null) {
-      return <Board artistDetails={this.state.boardData}/>
+      return <Board 
+      overlay={rainbowGenerator(
+        Math.round(Math.random() * 100), 
+        Math.round(Math.random() * 80)
+      )} 
+      artistDetails={this.state.boardData}/>
     }
   }
 
@@ -73,6 +115,17 @@ class Container extends Component {
   render() {
     return (
       <div className={`container`}>
+        <div className={`container__header`}>
+          <div className={`container__header__name`}>
+            <p>Sungr</p>
+          </div>
+          <div className={`container__header__inputfield`}>
+            <input 
+            className={`container__header__inputfield--input`} 
+            placeholder={`Find an Artist`}
+            onKeyDown={this.setSearchTerm}/>
+          </div>
+        </div>
         {this.renderBoard()}
         {this.rendersearchedTracks()}
         <div className={`container__recommended__header`}>

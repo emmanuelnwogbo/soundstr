@@ -35,3 +35,17 @@
     transform: translateY(0)
   }
 }
+
+@keyframes upandDown {
+  0% {
+    transform: translateY(-.5rem)
+  }
+
+  50% {
+    transform: translateY(-.2rem)
+  }
+  
+  100% {
+    transform: translateY(0) 
+  }
+}
