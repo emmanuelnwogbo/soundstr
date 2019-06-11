@@ -1,3 +1,50 @@
 .container {
-  
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(18rem, 18rem));
+  grid-template-rows: repeat(auto-fit, minmax(1.5rem, 1.5rem));
+  grid-gap: 1.5rem;
+  align-items: start;
+  justify-content: center;
+  padding: 1rem 3rem;
+
+  &__board {
+    grid-column: 1 / 6;
+    height: 50rem;
+    grid-row: span 32;
+    position: relative;
+
+    & figure {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+    }
+
+    & img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;  
+    }
+  }
+
+  &__recommended__header {
+    display: flex;
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    color: #fff;
+
+    &--h1 {
+      font-weight: 900;
+      font-size: 2rem;
+    }
+
+    &--para {
+      opacity: .5;
+      font-weight: 700;
+      font-size: 1.5rem;
+    }
+  }
 }

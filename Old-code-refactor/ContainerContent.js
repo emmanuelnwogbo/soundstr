@@ -12,9 +12,9 @@ class ContainerContent extends Component {
   }
 
   renderSongs = () => {
-    const SongCard = this.props.lazy(() => import('./SongCard'));
-    const Suspense = this.props.Suspense;
     if (this.state.artists !== null) {
+      const SongCard = this.props.lazy(() => import('./SongCard'));
+      const Suspense = this.props.Suspense;
       return this.state.artists.map(artist => {
         return (
           <Suspense fallback={
@@ -31,7 +31,7 @@ class ContainerContent extends Component {
             <SongCard 
             songPlaying={this.props.songPlaying} 
             currentArtist={this.props.currentArtist} 
-            importFunction={this.props.importFunction} 
+            playerBarStateController={this.props.playerBarStateController} 
             key={artist.id} 
             artist={artist}
             />

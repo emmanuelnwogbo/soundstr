@@ -3,14 +3,17 @@ import React, { Component } from 'react';
 class PlayerBar extends Component {
   constructor() {
     super();
-    this.state = {};
+    this.state = {
+      songPlaying: false
+    };
   }
 
   playSong = () => {
     //this.props.playerBarStateController(this.props.currentArtist);
-    this.props.importFunction(`playerBarStateControl`, {
-      currentArtist: this.props.currentArtist
-    })
+    if (this.state.songPlaying) {
+      return this.setState({ songPlaying: false })
+    }
+    this.setState({ songPlaying: true })
   }
 
   playNextSong = () => {
@@ -49,8 +52,23 @@ class PlayerBar extends Component {
     )
   }
 
-  renderPlayPauseBtn = () => {
+  /*renderPlayPauseBtn = () => {
     if (this.props.songPlaying) {
+      return (
+        <svg className="playerbar--controls-svg playerbar--controls-svgplaypause" onClick={this.playSong}>
+          <use xlinkHref="./sprite.svg#icon-pause" />
+        </svg>
+      )
+    }
+    return (
+      <svg className="playerbar--controls-svg playerbar--controls-svgplaypause" onClick={this.playSong}>
+        <use xlinkHref="./sprite.svg#icon-play2" />
+      </svg>
+    )
+  }*/
+
+  renderPlayPauseBtn = () => {
+    if (this.state.songPlaying) {
       return (
         <svg className="playerbar--controls-svg playerbar--controls-svgplaypause" onClick={this.playSong}>
           <use xlinkHref="./sprite.svg#icon-pause" />
@@ -102,7 +120,7 @@ class PlayerBar extends Component {
           <svg className="playerbar--controls-svg" onClick={this.props.prevSong}>
             <use xlinkHref="./sprite.svg#icon-previous2" />
           </svg>
-          <div className="playerbar--controls-playpausebackground">
+          <div className="playerbar--controls-playpausebackground" onClick={this.playSong}>
             {this.renderPlayPauseBtn()}
           </div>
           <svg className="playerbar--controls-svg" onClick={this.playNextSong}>
