@@ -95,7 +95,7 @@ class SongCard extends Component {
             <span className={`songcard--overlay`} style={{
               background: `${overlay}`
             }}></span>
-            <img src={`${track.album.images[0].url}`}/>
+            <img src={`${track.album.images[2].url}`}/>
           </figure>
           <div className={`songcard__details`}>
             <h3 className={`songcard__details--h3`}>{track.name}</h3>
