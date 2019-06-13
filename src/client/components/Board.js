@@ -1,5 +1,4 @@
-import React, { Component } from 'react';
-import '../scss/components/container.scss';
+import React from 'react';
 
 const Board = ({ artistDetails, overlay }) => {
   console.log(artistDetails)

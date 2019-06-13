@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import axios from "axios";
 
 import artists from '../../db';
-import '../scss/components/container.scss'
 import rainbowGenerator from '../../helpers/rainbow';
 
 import Board from './Board';
@@ -15,8 +14,58 @@ class Container extends Component {
       recommendedArtists: artists,
       searchedTracks: [],
       boardData: null,
-      searchTerm: 'meg'
+      searchTerm: 'meg',
+      songPlaying: false,
+      currentTrack: null
     }
+  }
+
+  playPause = (event) => {
+    console.log(event.target.classList)
+    if (event.target.classList.contains(`play`)) {
+      console.log(event.target)
+
+      if (this.state.currentTrack !== event.target.dataset.songmatch 
+        && this.state.currentTrack !== null) {
+        this.stopSong();
+        return this.setState({
+          songPlaying: true,
+          currentTrack: event.target.dataset.songmatch
+        }, () => {
+          this.playSong()
+        })
+      }
+
+      return this.setState({ 
+        songPlaying: true,
+        currentTrack: event.target.dataset.songmatch
+      }, () => {
+        this.playSong();
+      })
+    }
+
+    return this.setState({ 
+      songPlaying: false,
+      currentTrack: event.target.dataset.songmatch
+    }, () => {
+      this.pauseSong();
+    })
+  }
+
+  playSong = () => {
+    const { currentTrack } = this.state;
+    document.getElementById(currentTrack).play()
+  }
+
+  pauseSong = () => {
+    const { currentTrack } = this.state;
+    document.getElementById(currentTrack).pause()
+  }
+
+  stopSong = () => {
+    const { currentTrack } = this.state;
+    document.getElementById(currentTrack).load()
+    document.getElementById(currentTrack).pause()
   }
 
   setSearchTerm = (event) => {
@@ -76,6 +125,9 @@ class Container extends Component {
           Math.round(Math.random() * 100), 
           Math.round(Math.random() * 80)
         )}
+        playPause={this.playPause}
+        songPlaying={this.state.songPlaying}
+        currentTrack={this.state.currentTrack}
         />
       )
     })
@@ -92,6 +144,9 @@ class Container extends Component {
           Math.round(Math.random() * 100), 
           Math.round(Math.random() * 80)
         )}
+        playPause={this.playPause}
+        songPlaying={this.state.songPlaying}
+        currentTrack={this.state.currentTrack}
         />
       )
     })

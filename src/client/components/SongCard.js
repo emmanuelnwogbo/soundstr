@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import '../scss/components/songcard.scss';
+import Audio from './Audio';
 
 class SongCard extends Component {
   constructor(props) {
     super(props);
-    this.state = {}
+    this.state = {
+      songCardId: null
+    }
   }
 
   openTrack = () => {
@@ -13,16 +15,44 @@ class SongCard extends Component {
     win.focus();
   }
 
+  returnPlayPauseBtn = (id) => {
+    const { playPause } = this.props;
+    if (this.props.songPlaying && this.props.currentTrack === this.state.songCardId) {
+      return (
+        <svg className={`songcard__controls--svg ${id} pause`} data-songmatch={id} onClick={playPause}>
+          <use xlinkHref="./sprite.svg#icon-pause" data-songmatch={id} className={`${id} pause`}/>
+        </svg>
+      )
+    }
+
+    
+    return (
+      <svg className={`songcard__controls--svg ${id} play`} data-songmatch={id} onClick={playPause}>
+        <use xlinkHref="./sprite.svg#icon-play2" data-songmatch={id} className={`${id} play`}/>
+      </svg>
+    )
+  }
+
+  componentDidMount() {
+    const { track, artist } = this.props;
+    if (track !== undefined) {
+      return this.setState({ songCardId: track.id })
+    }
+    
+    if (artist !== undefined) {
+      return this.setState({ songCardId: artist.id })
+    }
+  }
+
   render() {
     if (this.props.track) {
       const { track, overlay } = this.props;
       return (
         <div className={`songcard`}>
+          <Audio songSrc={track.preview_url} id={track.id}/>
           <figure>
             <div className={`songcard__controls`}>
-              <svg className={`songcard__controls--svg`}>
-                <use xlinkHref="./sprite.svg#icon-play2" />
-              </svg>
+              {this.returnPlayPauseBtn(track.id)}
               <span onClick={this.openTrack}>play on spotify</span>
             </div>
             <span className={`songcard--overlay`} style={{
@@ -37,14 +67,14 @@ class SongCard extends Component {
         </div>
       )
     }
+
     const { artist, overlay } = this.props;
     return (
       <div className={`songcard`}>
+        <Audio songSrc={artist.artist_songlink} id={artist.id}/>
         <figure>
           <div className={`songcard__controls`}>
-            <svg className={`songcard__controls--svg`}>
-              <use xlinkHref="./sprite.svg#icon-play2" />
-            </svg>
+            {this.returnPlayPauseBtn(artist.id)}
           </div>
           <span className={`songcard--overlay`} style={{
             background: `${overlay}`
