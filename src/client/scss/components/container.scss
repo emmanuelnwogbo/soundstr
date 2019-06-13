@@ -74,27 +74,27 @@
     }
 
     & span:nth-child(1) {
-      transition: all .1s ease-in-out;
-      animation: upandDown .1s ease-in-out infinite;
+      transition: all 1s ease-in-out;
+      animation: upandDown 1s linear 1s infinite;
       background: rgba(214, 48, 49,1.0);
       display: inline-block;
     }
 
     & span:nth-child(2) {
-      transition: all .2s ease-in-out;
-      animation: upandDown .2s ease-in-out infinite;
+      transition: all 1.5s ease-in-out;
+      animation: upandDown 1.5s linear 1.5s infinite;
       background: #4834d4;
     }
 
     & span:nth-child(3) {
-      transition: all .3s ease-in-out;
-      animation: upandDown .3s ease-in-out infinite;
+      transition: all 2s ease-in-out;
+      animation: upandDown 2s linear 2s infinite;
       background: #FC427B;
     }
 
     & span:nth-child(4) {
-      transition: all .4s ease-in-out;
-      animation: upandDown .4s ease-in-out infinite;
+      transition: all 2.5s ease-in-out;
+      animation: upandDown 2.5s linear 2.5s infinite;
       background: #B33771;
     }
   }

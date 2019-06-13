@@ -14,9 +14,10 @@ class Container extends Component {
       recommendedArtists: artists,
       searchedTracks: [],
       boardData: null,
-      searchTerm: 'meg',
+      searchTerm: 'metric',
       songPlaying: false,
-      currentTrack: null
+      currentTrack: null,
+      playBackState: null
     }
   }
 
@@ -79,6 +80,24 @@ class Container extends Component {
     }
   }
 
+  addEventListeners = () => {
+    const audios = Array.from(document.getElementsByTagName('audio'));
+    audios.forEach(audio => {
+      audio.addEventListener('waiting', () => {
+        this.setState({ playBackState: 'waiting' })
+      });
+      audio.addEventListener('playing', () => {
+        this.setState({ playBackState: 'playing' })
+      });
+      audio.addEventListener('ended', () => {
+        this.setState({ 
+          playBackState: 'ended',
+          songPlaying: false
+        })
+      });
+    })
+  }
+
   fetchArtist = async () => {
     const { searchTerm } = this.state;
     const res = await axios.get(`https://spotify-api-wrapper.appspot.com/artist/${searchTerm}`);
@@ -94,7 +113,7 @@ class Container extends Component {
             this.setState({
               searchedTracks: res.data.tracks
             }, () => {
-              console.log(this.state)
+              this.addEventListeners();
             })
           }
         }).catch(err => {
@@ -128,6 +147,7 @@ class Container extends Component {
         playPause={this.playPause}
         songPlaying={this.state.songPlaying}
         currentTrack={this.state.currentTrack}
+        playBackState={this.state.playBackState}
         />
       )
     })
@@ -147,6 +167,7 @@ class Container extends Component {
         playPause={this.playPause}
         songPlaying={this.state.songPlaying}
         currentTrack={this.state.currentTrack}
+        playBackState={this.state.playBackState}
         />
       )
     })

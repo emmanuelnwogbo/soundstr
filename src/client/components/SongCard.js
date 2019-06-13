@@ -15,8 +15,44 @@ class SongCard extends Component {
     win.focus();
   }
 
+  returnFeedBack = () => {
+    if (this.props.songPlaying && 
+      this.props.currentTrack === this.state.songCardId && 
+      this.props.playBackState === 'playing') {
+      return (
+        <div className={`songcard__playingfeedback`}>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      )
+    }
+
+    if (!this.props.songPlaying || this.props.playBackState === 'ended') {
+      return (
+        <div>
+        </div>
+      )
+    }
+  }
+
   returnPlayPauseBtn = (id) => {
     const { playPause } = this.props;
+
+    if (this.props.songPlaying && 
+      this.props.currentTrack === this.state.songCardId && 
+      this.props.playBackState === 'waiting') {
+        return (
+          <svg className={`songcard__controls--svg ${id} pause`} style={{
+            animation: `spinThree 1s linear 1s infinite`,
+            fill: 'rgba(214, 48, 49,1.0)',
+            opacity: '1'
+          }} data-songmatch={id} onClick={playPause}>
+            <use xlinkHref="./sprite.svg#icon-spinner9" data-songmatch={id} className={`${id} pause`}/>
+          </svg>
+        )        
+    }
+
     if (this.props.songPlaying && this.props.currentTrack === this.state.songCardId) {
       return (
         <svg className={`songcard__controls--svg ${id} pause`} data-songmatch={id} onClick={playPause}>
@@ -55,6 +91,7 @@ class SongCard extends Component {
               {this.returnPlayPauseBtn(track.id)}
               <span onClick={this.openTrack}>play on spotify</span>
             </div>
+            {this.returnFeedBack()}
             <span className={`songcard--overlay`} style={{
               background: `${overlay}`
             }}></span>
@@ -76,6 +113,7 @@ class SongCard extends Component {
           <div className={`songcard__controls`}>
             {this.returnPlayPauseBtn(artist.id)}
           </div>
+          {this.returnFeedBack()}                   
           <span className={`songcard--overlay`} style={{
             background: `${overlay}`
           }}></span>

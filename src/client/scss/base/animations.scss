@@ -49,3 +49,17 @@
     transform: translateY(0) 
   }
 }
+
+@keyframes spinThree {
+  0% {
+    transform: rotate(0deg);
+  }
+  
+  50% {
+    opacity: 0;
+  }
+  
+  100% {
+    transform: rotate(360deg);  
+  }
+}
