@@ -10,6 +10,6 @@ app.get('/', (req, res) => {
   res.send(renderer(store));
 });
 
-app.listen(8000, () => {
-  console.log('listening on PORT 8000')
+app.listen(3000, () => {
+  console.log('listening on PORT 3000')
 });

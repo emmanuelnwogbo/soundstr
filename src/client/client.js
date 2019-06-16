@@ -8,6 +8,7 @@ import reducers from './reducers';
 import './scss/main.scss';
 import './scss/components/container.scss'
 import './scss/components/songcard.scss';
+import './scss/components/controls.scss';
 import Container from './components/Container';
 
 const store = createStore(reducers, {}, applyMiddleware(thunk))
