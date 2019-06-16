@@ -154,7 +154,8 @@ class Container extends Component {
         this.setState({
           songPlaying: false,
           currentTrack: artists[0].id,
-          playBackState: 'ended'
+          playBackState: 'ended',
+          initiallyPlaying: false
         })
       }
       this.setState({
