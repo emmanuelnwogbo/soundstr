@@ -20,18 +20,19 @@ class Container extends Component {
       currentTrack: artists[0].id,
       playBackState: null,
       initialVisit: true,
+      initiallyPlaying: false,
       tracks: [...artists],
-      noArtistFound: false,
-      currentTrackMeta: {
-        name: artists[0].artist_name,
-        nameOfTrack: artists[0].artist_songname
-      }
+      noArtistFound: false
     }
   }
 
   handleNextPrevStateTransition = (nextOrPrevSongCard) => {
+    const { initiallyPlaying } = this.state;
     this.setState({ currentTrack: nextOrPrevSongCard.firstChild.id }, () => {
-      return this.playSong();
+      if (initiallyPlaying) {
+        this.setState({ songPlaying: true })
+        return this.playSong();
+      }
     });
   }
 
@@ -128,11 +129,13 @@ class Container extends Component {
 
   playSong = () => {
     const { currentTrack } = this.state;
+    this.setState({ initiallyPlaying: true })
     document.getElementById(currentTrack).play()
   }
 
   pauseSong = () => {
     const { currentTrack } = this.state;
+    this.setState({ initiallyPlaying: false })
     document.getElementById(currentTrack).pause()
   }
 
