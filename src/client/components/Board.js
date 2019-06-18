@@ -15,14 +15,24 @@ const Board = ({ artistDetails, overlay }) => {
     win.focus();
   }
 
+  const returnImage = () => {
+    if (artistDetails.images[0] !== undefined && artistDetails.images[0] !== null) {
+      return (
+        <figure>
+          <img src={`${artistDetails.images[0].url}`}/>
+        </figure>
+      )
+    }
+
+    return;
+  }
+
   return (
     <div className={`container__board`}>
       <span style={{
         background: `${overlay}`
       }} className={`container__board--overlay`}></span>
-      <figure>
-        <img src={`${artistDetails.images[0].url}`}/>
-      </figure>
+      {returnImage()}
       <h3 className={`container__board__genres--h3 container__board__genres--h3-name`}>{artistDetails.name}</h3>
       <h3 className={`container__board__genres--h3`}>Genres</h3>
       <div className={`container__board__genres`}>

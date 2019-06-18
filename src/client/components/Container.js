@@ -128,15 +128,13 @@ class Container extends Component {
   }
 
   playSong = () => {
-    const { currentTrack } = this.state;
     this.setState({ initiallyPlaying: true })
-    document.getElementById(currentTrack).play()
+    document.getElementById(this.state.currentTrack).play()
   }
 
   pauseSong = () => {
-    const { currentTrack } = this.state;
     this.setState({ initiallyPlaying: false })
-    document.getElementById(currentTrack).pause()
+    document.getElementById(this.state.currentTrack).pause()
   }
 
   stopSong = () => {
@@ -172,6 +170,10 @@ class Container extends Component {
   addEventListeners = () => {
     const audios = Array.from(document.getElementsByTagName('audio'));
     audios.forEach(audio => {
+      audio.preload = "auto";
+      audio.addEventListener('error', (e) => {
+        console.log(e, 'there was an error playing the video')
+      })
       audio.addEventListener('waiting', () => {
         this.setState({ playBackState: 'waiting' })
       });
@@ -205,10 +207,14 @@ class Container extends Component {
                 if (res.data.tracks) {
                   //console.log(res.data.tracks)
                   if (this.state.initialVisit) {
-                    this.setState({
-                      currentTrack: res.data.tracks[0].id,
-                      initialVisit: false
-                    })
+                    if (!this.state.songPlaying) {
+                      this.setState({
+                        currentTrack: res.data.tracks[0].id,
+                        initialVisit: false
+                      })
+                    }
+
+                    this.setState({ initialVisit: false })
                   }
 
                   this.setState({ 
@@ -299,11 +305,14 @@ class Container extends Component {
     if (noArtistFound) {
       return <div style={{
         gridColumn: `1 / -1`,
+        gridRow: `span 5`,
         textAlign: `center`,
         color: `#fff`,
         fontWeight: `900`,
         fontSize: `2.5rem`
-      }}>No Artist Found... Try a different search?</div>
+      }}><div>Couldn't Find any artist named {this.state.searchTerm}...</div>
+      <div>Try a different search?</div>
+      </div>
     }
 
     return;
