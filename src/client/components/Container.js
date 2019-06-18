@@ -22,18 +22,28 @@ class Container extends Component {
       initialVisit: true,
       initiallyPlaying: false,
       tracks: [...artists],
-      noArtistFound: false
+      noArtistFound: false,
+      loop: false,
+      manuallyMovedToNextSong: false,
+      shuffle: false
     }
   }
 
   handleNextPrevStateTransition = (nextOrPrevSongCard) => {
     const { initiallyPlaying } = this.state;
-    this.setState({ currentTrack: nextOrPrevSongCard.firstChild.id }, () => {
+    this.setState({ 
+      currentTrack: nextOrPrevSongCard.firstChild.id,
+      manuallyMovedToNextSong: false 
+    }, () => {
       if (initiallyPlaying) {
         this.setState({ songPlaying: true })
         return this.playSong();
       }
     });
+  }
+
+  manuallyMoveToNextSong = () => {
+    this.setState({ manuallyMovedToNextSong: true })
   }
 
   playNext = () => {
@@ -188,10 +198,33 @@ class Container extends Component {
           playBackState: 'ended',
           songPlaying: false,
         }, () => {
+          if (this.state.loop) {
+            return this.setState({
+              songPlaying: true
+            }, () => {
+              return this.playSong();
+            })
+          }
           this.playNext()
         })
       });
     })
+  }
+
+  handleLoop = () => {
+    if (this.state.loop) {
+      return this.setState({ loop: false })
+    }
+
+    return this.setState({ loop: true })
+  }
+
+  toggleShuffle = () => {
+    if (this.state.shuffle) {
+      return this.setState({ shuffle: false })
+    }
+
+    return this.setState({ shuffle: true })
   }
 
   fetchArtist = () => {
@@ -332,12 +365,16 @@ class Container extends Component {
       playNext,
       playPrev, 
       togglePauseState,
-      updateSlider
+      handleLoop,
+      manuallyMoveToNextSong,
+      toggleShuffle
     } = this;
     const { 
       songPlaying,
       currentTrack, 
-      tracks
+      tracks,
+      loop,
+      shuffle
      } = this.state;
     return (
       <div className={`container`}>
@@ -368,7 +405,12 @@ class Container extends Component {
       togglePauseState={togglePauseState}
       songPlaying={songPlaying}
       tracks={tracks}
-      currentTrack={currentTrack}/>
+      currentTrack={currentTrack}
+      loop={loop}
+      handleLoop={handleLoop}
+      manuallyMoveToNextSong={manuallyMoveToNextSong}
+      shuffle={shuffle}
+      toggleShuffle={toggleShuffle}/>
     </div>
     )
   }

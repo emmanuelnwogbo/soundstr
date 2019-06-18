@@ -13,7 +13,9 @@ class Controls extends Component {
         `icon-controller-next`,
         `icon-loop1`,
         `icon-volume-medium`
-      ]
+      ],
+      loopBtnColor: `rgba(255, 255, 255,.6)`,
+      shuffleBtnColor: `rgba(255, 255, 255,.6)`
     }
   }
 
@@ -38,11 +40,21 @@ class Controls extends Component {
     }
 
     if (e.target.dataset.control === `icon-controller-next`) {
+      this.props.manuallyMoveToNextSong();
       return playNext();
     }
 
     if (e.target.dataset.control === `icon-controller-jump-to-start`) {
+      this.props.manuallyMoveToNextSong();
       return playPrev();
+    }
+
+    if (e.target.dataset.control === `icon-loop1`) {
+      return this.props.handleLoop();
+    }
+
+    if (e.target.dataset.control === `icon-shuffle1`) {
+      return this.props.toggleShuffle();
     }
   }
 
@@ -70,8 +82,57 @@ class Controls extends Component {
     const { controls } = this.state;
     return controls.map(control => {
       if (control === `icon-play2` || control === `icon-pause`) {
-        return this.renderPlayPauseBtn(control);
+        return (
+          <span id={control} key={control} style={{
+            margin: `0 1.5rem`,
+            cursor: 'pointer',
+            display: 'none'
+          }} onClick={this.handleIconBtnActions} id={`${control}`}>
+            <svg className={`controls__middle__icons--svg`} data-control={`${control}`} style={{
+              height: `3rem`,
+              width: `3rem`,
+              fill: `#d63031`
+            }}>
+              <use xlinkHref={`./sprite.svg#${control}`} data-control={`${control}`}/>
+            </svg>
+          </span>
+        ) 
       }
+
+      if (control === `icon-loop1`) {
+        return (
+          <span id={control} key={control} style={{
+            margin: `0 1.5rem`,
+            cursor: 'pointer'
+          }} onClick={this.handleIconBtnActions}>
+            <svg className={`controls__middle__icons--svg`} data-control={`${control}`} style={{
+              height: `2.5rem`,
+              width: `2.5rem`,
+              fill: this.state.loopBtnColor
+            }} id={`${control}`}>
+              <use xlinkHref={`./sprite.svg#${control}`} data-control={`${control}`}/>
+            </svg>
+          </span>
+        )
+      }
+
+      if (control === `icon-shuffle1`) {
+        return (
+          <span id={control} key={control} style={{
+            margin: `0 1.5rem`,
+            cursor: 'pointer'
+          }} onClick={this.handleIconBtnActions}>
+            <svg className={`controls__middle__icons--svg`} data-control={`${control}`} style={{
+              height: `2.5rem`,
+              width: `2.5rem`,
+              fill: this.state.shuffleBtnColor
+            }} id={`${control}`}>
+              <use xlinkHref={`./sprite.svg#${control}`} data-control={`${control}`}/>
+            </svg>
+          </span>
+        )      
+      }
+
       return (
         <span id={control} key={control} style={{
           margin: `0 1.5rem`,
@@ -81,49 +142,12 @@ class Controls extends Component {
             height: `2.5rem`,
             width: `2.5rem`,
             fill: `rgba(255, 255, 255,.6)`
-          }}>
+          }} id={`${control}`}>
             <use xlinkHref={`./sprite.svg#${control}`} data-control={`${control}`}/>
           </svg>
         </span>
       )
     })
-  }
-
-  renderPlayPauseBtn = (control) => {
-    const { songPlaying } = this.props;
-    if (songPlaying && control === `icon-pause`) {
-      return (
-        <span id={control} key={control} style={{
-          margin: `0 1.5rem`,
-          cursor: 'pointer'
-        }} onClick={this.handleIconBtnActions}>
-          <svg className={`controls__middle__icons--svg`} data-control={`${control}`} style={{
-            height: `3rem`,
-            width: `3rem`,
-            fill: `rgba(255, 255, 255,.6)`
-          }}>
-            <use xlinkHref={`./sprite.svg#${control}`} data-control={`${control}`}/>
-          </svg>
-        </span>
-      )  
-    }
-
-    if (!songPlaying && control === `icon-play2`) {
-      return (
-        <span id={control} key={control} style={{
-          margin: `0 1.5rem`,
-          cursor: 'pointer'
-        }} onClick={this.handleIconBtnActions}>
-          <svg className={`controls__middle__icons--svg`} data-control={`${control}`} style={{
-            height: `3rem`,
-            width: `3rem`,
-            fill: `rgba(255, 255, 255,.6)`
-          }}>
-            <use xlinkHref={`./sprite.svg#${control}`} data-control={`${control}`}/>
-          </svg>
-        </span>
-      )  
-    }    
   }
 
   returnNames = () => {
@@ -143,6 +167,52 @@ class Controls extends Component {
         }
       }
     })
+  }
+
+  renderPlayPauseBtn = (nextProps) => {
+    if (nextProps.songPlaying) {
+      document.getElementById('icon-play2').style.display = 'none';
+      document.getElementById('icon-pause').style.display = 'inline-block';
+    }
+    
+    if (!nextProps.songPlaying) {
+      document.getElementById('icon-play2').style.display = 'inline-block';
+      document.getElementById('icon-pause').style.display = 'none';
+    }
+  }
+
+  renderLoopBtn = (nextProps) => {
+    if (nextProps.loop) {
+      return this.setState({
+        loopBtnColor: '#d63031'
+      });
+    }
+
+    return this.setState({
+      loopBtnColor: 'rgba(255, 255, 255,.6)'
+    });
+  }
+
+  renderShuffleBtn = (nextProps) => {
+    if (nextProps.shuffle) {
+      return this.setState({
+        shuffleBtnColor: '#d63031'
+      });
+    }
+
+    return this.setState({
+      shuffleBtnColor: 'rgba(255, 255, 255,.6)'
+    });
+  }
+
+  componentDidMount() {
+    document.getElementById('icon-play2').style.display = 'inline-block';
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.renderPlayPauseBtn(nextProps);
+    this.renderLoopBtn(nextProps);
+    this.renderShuffleBtn(nextProps)
   }
 
   render() {
