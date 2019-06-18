@@ -170,10 +170,11 @@ class Controls extends Component {
           <div className={`controls__middle__progress`} style={{
             width: `100%`
           }}>
-            <Slider/>
+            <Slider 
+            currentTrack={this.props.currentTrack}
+            songPlaying={this.props.songPlaying}/>
           </div>
         </div>
-
       </div>
     )
   }

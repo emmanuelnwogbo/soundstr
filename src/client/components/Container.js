@@ -129,7 +129,10 @@ class Container extends Component {
 
   playSong = () => {
     this.setState({ initiallyPlaying: true })
-    document.getElementById(this.state.currentTrack).play()
+    document.getElementById(this.state.currentTrack).play().then(() => {
+      console.log(document.getElementById(this.state.currentTrack).duration)
+      console.log(document.getElementById(this.state.currentTrack).currentTime)
+    })
   }
 
   pauseSong = () => {
@@ -328,7 +331,8 @@ class Container extends Component {
       pauseSong, 
       playNext,
       playPrev, 
-      togglePauseState
+      togglePauseState,
+      updateSlider
     } = this;
     const { 
       songPlaying,
