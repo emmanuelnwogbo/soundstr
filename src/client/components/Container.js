@@ -205,6 +205,11 @@ class Container extends Component {
               return this.playSong();
             })
           }
+
+          if (this.state.shuffle) {
+            return this.musicShuffler();
+          }
+
           this.playNext()
         })
       });
@@ -225,6 +230,28 @@ class Container extends Component {
     }
 
     return this.setState({ shuffle: true })
+  }
+
+  musicShuffler = () => {
+    const rando = this.state.tracks[Math.floor(Math.random()*this.state.tracks.length)]
+    if (document.getElementById(rando) !== null) {
+      return this.setState({
+        currentTrack: rando.id,
+        songPlaying: true
+      }, () => {
+        return this.playSong();
+      })
+    }
+
+    if (document.getElementById(rando) === null) {
+      const rando = this.state.tracks[Math.floor(Math.random()*this.state.tracks.length)]
+      return this.setState({
+        currentTrack: rando.id,
+        songPlaying: true
+      }, () => {
+        return this.playSong();
+      })
+    }
   }
 
   fetchArtist = () => {
