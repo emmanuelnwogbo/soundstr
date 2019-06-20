@@ -5,7 +5,7 @@ const Board = ({ artistDetails, overlay }) => {
   const returnGenres = () => {
     return artistDetails.genres.map(genre => {
       return (
-        <span>{genre}</span>
+        <span key={genre}>{genre}</span>
       )
     })
   }

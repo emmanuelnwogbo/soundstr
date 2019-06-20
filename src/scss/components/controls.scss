@@ -70,6 +70,30 @@
 
   &__slider {
 
+    &__volume {
+      position: absolute;
+      top: -12rem;
+      right: 18.5rem;
+      width: 12rem;
+      height: 2rem;
+      background: #fff;
+      transform: rotate(-90deg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      & > input[type=range]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        height: 1.3rem;
+        width: 1.3rem;
+        border-radius: 50%;
+        background: #d63031;
+        cursor: pointer;
+        transition:  all .1s cubic-bezier(0.165, 0.84, 0.44, 1);
+        margin-top: -.5rem; /* You need to specify a margin in Chrome, but in Firefox and IE it is automatic */
+      }
+    }
+
     &--progress {
       transition:  all .1s cubic-bezier(0.165, 0.84, 0.44, 1);
     }

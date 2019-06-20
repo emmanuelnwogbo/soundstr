@@ -14,25 +14,34 @@ class Slider extends Component {
       currentTrack: null,
       transparentProgress: null,
       transparentProgressWidth: null,
-      playPercent: '0'
+      playPercent: '0',
+      transparentVolume: null,
+      transparentVolumeWidth: null,
+      currentVolume: 5,
+      volumePercent: '50%'
     };
     window.onresize = () => {
       this.setState({
-        transparentProgress: document.getElementById('progress-transparent')
+        transparentProgress: document.getElementById('progress-transparent'),
+        transparentVolume: document.getElementById('volume-transparent')
       }, () => {
         this.setState(prevState => {
           return {
-            transparentProgressWidth: prevState.transparentProgress.offsetWidth
+            transparentProgressWidth: prevState.transparentProgress.offsetWidth,
+            transparentVolumeWidth: prevState.transparentVolume.offsetWidth
           }
         })
       })
     }
   }
 
-  setCurrentSongTimeUpdateEvent = (nextProps) => {
+  setCurrentSongTimeUpdateEvent = nextProps => {
     if (nextProps.currentTrack !== this.state.currentTrack || this.props.songPlaying) {
       this.setState({ currentTrack: this.props.currentTrack }, () => {
         if (document.getElementById(this.state.currentTrack) !== null) {
+          Array.from(document.getElementsByTagName('audio')).forEach(audio => {
+            audio.volume = `${this.state.currentVolume / 10}`;
+          })
           document.getElementById(this.state.currentTrack).addEventListener('timeupdate', () => {
             const { currentTime, duration } = document.getElementById(this.state.currentTrack);
             this.setState({
@@ -48,10 +57,20 @@ class Slider extends Component {
     }
   }
 
-  changeValue = (e) => {
+  changeValueVolume = e => {
+    const { value } = e.target;
+    this.setState({ currentVolume: value }, () => {
+      document.getElementById(this.state.currentTrack).volume = `${this.state.currentVolume / 10}`;
+      this.setState({ 
+        volumePercent: `${this.state.currentVolume * 10}%` 
+      })
+    })
+  }
+
+  changeValue = e => {
     const { value } = e.target;
     this.setState({ currentTime: value }, () => {
-      document.getElementById(this.state.currentTrack).currentTime = this.state.currentTime;
+      document.getElementById(this.state.currentTrack).currentTime = this.state.currentTime; 
     });
   }
 
@@ -61,11 +80,13 @@ class Slider extends Component {
 
   componentDidMount() {
     this.setState({
-      transparentProgress: document.getElementById('progress-transparent')
+      transparentProgress: document.getElementById('progress-transparent'),
+      transparentVolume: document.getElementById('volume-transparent')
     }, () => {
       this.setState(prevState => {
         return {
-          transparentProgressWidth: prevState.transparentProgress.offsetWidth
+          transparentProgressWidth: prevState.transparentProgress.offsetWidth,
+          transparentVolumeWidth: prevState.transparentVolume.offsetWidth
         }
       })
     })
@@ -81,6 +102,49 @@ class Slider extends Component {
         justifyContent: 'center',
         alignItems: 'center'
       }} className={`controls__slider`}>
+        <div className={`controls__slider__volume`}>
+          <div style={{
+            position: 'absolute',
+            height: '100%',
+            width: '2rem',
+            top: '0',
+            right: '-2rem',
+            background: '#fff'
+          }}></div>
+          <div style={{
+            position: 'absolute',
+            width: `${this.state.volumePercent}`,
+            height: '.4rem',
+            borderRadius: '3rem',
+            cursor: 'pointer',
+            zIndex: '10',
+            background: '#d63031',
+            top: '36%',
+            left: '0'
+          }}></div>
+          <div style={{
+            position: 'absolute',
+            width: '100%',
+            height: '.4rem',
+            borderRadius: '3rem',
+            cursor: 'pointer',
+            zIndex: '10',
+            background: 'rgba(192, 57, 43,.5)',
+            top: '36%',
+            left: '0'
+          }} id={'volume-transparent'}></div>
+          <input
+            min='0'
+            max='10'
+            type='range'
+            value={`${this.state.currentVolume}`}
+            onChange={this.changeValueVolume}
+            style={{
+              position: 'relative',
+              zIndex: '12'
+            }}
+            className={`controls__slider__volume--input`}></input>
+        </div>
         <span style={{
           display: 'inline-block',
           margin: '0 1rem'
