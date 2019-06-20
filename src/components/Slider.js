@@ -102,13 +102,14 @@ class Slider extends Component {
         justifyContent: 'center',
         alignItems: 'center'
       }} className={`controls__slider`}>
-        <div className={`controls__slider__volume`}>
+        <div className={`controls__slider__volume--parent`}>
+          <div className={`controls__slider__volume`}>
           <div style={{
             position: 'absolute',
             height: '100%',
             width: '2rem',
             top: '0',
-            right: '-2rem',
+            right: '-1rem',
             background: '#fff'
           }}></div>
           <div style={{
@@ -144,6 +145,7 @@ class Slider extends Component {
               zIndex: '12'
             }}
             className={`controls__slider__volume--input`}></input>
+        </div>
         </div>
         <span style={{
           display: 'inline-block',

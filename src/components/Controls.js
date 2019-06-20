@@ -137,12 +137,12 @@ class Controls extends Component {
         <span id={control} key={control} style={{
           margin: `0 1.5rem`,
           cursor: 'pointer'
-        }} onClick={this.handleIconBtnActions}>
+        }} onClick={this.handleIconBtnActions} id={`${control}`}>
           <svg className={`controls__middle__icons--svg`} data-control={`${control}`} style={{
             height: `2.5rem`,
             width: `2.5rem`,
             fill: `rgba(255, 255, 255,.6)`
-          }} id={`${control}`}>
+          }}>
             <use xlinkHref={`./sprite.svg#${control}`} data-control={`${control}`}/>
           </svg>
         </span>

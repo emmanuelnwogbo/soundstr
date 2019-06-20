@@ -70,14 +70,37 @@
 
   &__slider {
 
+    &__volume--parent {
+      position: absolute;
+      top: -11rem;
+      width: 15rem;
+      height: 2rem;
+      transform: rotate(-90deg) translateY(13.5rem) translateX(-13rem);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition:  all .1s ease-in-out;
+      cursor: pointer;
+
+      &::hover {
+        opacity: 1;
+        transform: rotate(-90deg) translateY(13.5rem) translateX(0);
+      }
+
+      &:hover {
+        opacity: 1;
+        transform: rotate(-90deg) translateY(13.5rem) translateX(0);
+      }
+    }
+
     &__volume {
       position: absolute;
-      top: -12rem;
-      right: 18.5rem;
+      top: 0;
+      right: 0;
       width: 12rem;
       height: 2rem;
       background: #fff;
-      transform: rotate(-90deg);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -91,6 +114,27 @@
         cursor: pointer;
         transition:  all .1s cubic-bezier(0.165, 0.84, 0.44, 1);
         margin-top: -.5rem; /* You need to specify a margin in Chrome, but in Firefox and IE it is automatic */
+      }
+
+      & > input[type=range]::-moz-range-thumb {
+        -webkit-appearance: none;
+        height: 1.3rem;
+        width: 1.3rem;
+        border-radius: 50%;
+        background: #d63031;
+        cursor: pointer;
+        transition:  all .1s cubic-bezier(0.165, 0.84, 0.44, 1);
+      }
+      
+      /* All the same stuff for IE */
+      & > input[type=range]::-ms-thumb {
+        -webkit-appearance: none;
+        height: 1.3rem;
+        width: 1.3rem;
+        border-radius: 50%;
+        background: #d63031;
+        cursor: pointer;
+        transition:  all .1s cubic-bezier(0.165, 0.84, 0.44, 1);
       }
     }
 
