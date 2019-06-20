@@ -69,3 +69,51 @@ class SongCard extends Component {
 }
 
 export default SongCard;
+
+
+const { currentTrack, playBackState } = this.state;
+    const currentSong = document.getElementById(currentTrack);
+
+    if (currentSong.parentElement.nextSibling !== null) {
+      if (currentSong.parentElement.nextSibling.classList.contains('controls')) {
+        if (playBackState !== 'ended') {
+          return;
+        }
+        return this.setState({
+          currentTrack: Array.from(document.getElementsByTagName('audio'))[0].id
+        })
+      }
+
+      if (currentSong.parentElement.nextElementSibling.classList.contains('container__recommended__header')) {
+        const nextSongCard = currentSong.parentElement.nextElementSibling.nextElementSibling;
+        this.stopSong();
+        this.handleNextPrevStateTransition(nextSongCard)
+      }
+
+      if (currentSong.parentElement.nextSibling.classList.contains('songcard')) {
+        const nextSongCard = currentSong.parentElement.nextSibling;
+        this.stopSong();
+        this.handleNextPrevStateTransition(nextSongCard)
+      }
+    }
+
+    const { currentTrack} = this.state;
+    const currentSong = document.getElementById(currentTrack);
+    
+    if (currentSong.parentElement.previousSibling !== null) {
+      if (currentSong.parentElement.previousSibling.classList.contains('container__board')) {
+        return;
+      }
+
+      if (currentSong.parentElement.previousSibling.classList.contains('container__recommended__header')) {
+        const prevSongCard = currentSong.parentElement.previousSibling.previousSibling;
+        this.stopSong();
+        this.handleNextPrevStateTransition(prevSongCard)
+      }
+
+      if (currentSong.parentElement.previousSibling.classList.contains('songcard')) {
+        const prevSongCard = currentSong.parentElement.previousSibling;
+        this.stopSong();
+        this.handleNextPrevStateTransition(prevSongCard)
+      }
+    }

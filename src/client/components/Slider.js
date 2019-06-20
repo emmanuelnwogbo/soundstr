@@ -15,6 +15,17 @@ class Slider extends Component {
       transparentProgress: null,
       transparentProgressWidth: null,
       playPercent: '0'
+    };
+    window.onresize = () => {
+      this.setState({
+        transparentProgress: document.getElementById('progress-transparent')
+      }, () => {
+        this.setState(prevState => {
+          return {
+            transparentProgressWidth: prevState.transparentProgress.offsetWidth
+          }
+        })
+      })
     }
   }
 
@@ -23,7 +34,7 @@ class Slider extends Component {
       this.setState({ currentTrack: this.props.currentTrack }, () => {
         if (document.getElementById(this.state.currentTrack) !== null) {
           document.getElementById(this.state.currentTrack).addEventListener('timeupdate', () => {
-            const { currentTime, duration } = document.getElementById(this.state.currentTrack)
+            const { currentTime, duration } = document.getElementById(this.state.currentTrack);
             this.setState({
                currentTime, 
                duration,

@@ -23,7 +23,7 @@ class Controls extends Component {
     const { 
       playSong, 
       pauseSong, 
-      playNext, 
+      playNextManually, 
       playPrev,
       togglePauseState
     } = this.props;
@@ -40,12 +40,10 @@ class Controls extends Component {
     }
 
     if (e.target.dataset.control === `icon-controller-next`) {
-      this.props.manuallyMoveToNextSong();
-      return playNext();
+      return playNextManually();
     }
 
     if (e.target.dataset.control === `icon-controller-jump-to-start`) {
-      this.props.manuallyMoveToNextSong();
       return playPrev();
     }
 

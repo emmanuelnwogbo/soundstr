@@ -1,52 +1,37 @@
-const { searchTerm } = this.state;
-const res = await axios.get(`https://spotify-api-wrapper.appspot.com/artist/${searchTerm}`);
-if (res.data.artists.items) {
-  this.setState({
-    boardData: res.data.artists.items[0]
-  }, () => {
-    const { boardData } = this.state;
-    axios.get( `https://spotify-api-wrapper.appspot.com/artist/${
-      boardData.id
-    }/top-tracks`).then(res => {
-      if (res.data.tracks) {
-        const { initialVisit } = this.state;
-
-        if (initialVisit) {
-          this.setState(prevState => {
-            return { 
-              searchedTracks: res.data.tracks,
-              tracks: [...res.data.tracks, ...prevState.tracks],
-              initialVisit: false 
-            }
-          }, () => {
-            const { tracks } = this.state;
-            this.setState({ 
-              currentTrack: tracks[0].id,
-              currentTrackMeta: {
-                name: tracks[0].artists[0].name,
-                nameOfTrack: tracks[0].name
+if (res.data) {
+  if (res.data.artists.items.length > 0) {
+    return this.setState({
+      boardData: res.data.artists.items[0]
+    }, () => {
+      const { boardData } = this.state;
+      axios.get( `https://spotify-api-wrapper.appspot.com/artist/${boardData.id}/top-tracks`)
+        .then(res => {
+          if (res.data.tracks) {
+            //console.log(res.data.tracks)
+            if (this.state.initialVisit) {
+              if (!this.state.songPlaying) {
+                return this.setState({
+                  currentTrack: res.data.tracks[0].id,
+                  initialVisit: false
+                })
               }
-             }, () => {
-              this.addEventListeners();
-            })
-          })
-        }
 
-        if (!initialVisit) {
-          const { tracks, currentTrack } = this.state;
-          console.log('initial visit', initialVisit)
-          this.setState(prevState => {
-            return {
-              searchedTracks: res.data.tracks,
-              tracks: [...res.data.tracks, ...prevState.tracks]
+              this.setState({ initialVisit: false })
             }
-          }, () => {
-            console.log(this.state, 'final')
-          })
-        }
-      }
-    }).catch(err => {
-      console.log(err)
+
+            this.setState({ 
+              searchedTracks: res.data.tracks,
+              tracks: [...res.data.tracks, ...artists]
+            }, () => {
+              const { addEventListeners } = this;
+              addEventListeners();
+            })
+          }
+        })
     })
+  }
+
+  return this.setState({
+    noArtistFound: true
   })
 }

@@ -24,84 +24,96 @@ class Container extends Component {
       tracks: [...artists],
       noArtistFound: false,
       loop: false,
-      manuallyMovedToNextSong: false,
       shuffle: false
     }
   }
 
-  handleNextPrevStateTransition = (nextOrPrevSongCard) => {
-    const { initiallyPlaying } = this.state;
-    this.setState({ 
-      currentTrack: nextOrPrevSongCard.firstChild.id,
-      manuallyMovedToNextSong: false 
-    }, () => {
-      if (initiallyPlaying) {
-        this.setState({ songPlaying: true })
-        return this.playSong();
-      }
-    });
-  }
+  playNextManually = () => {
+    const nextSibling = document.getElementById(this.state.currentTrack).parentElement.nextElementSibling;
+    
+    if (nextSibling.classList.contains('controls')) {
+      return;
+    }
 
-  manuallyMoveToNextSong = () => {
-    this.setState({ manuallyMovedToNextSong: true })
+    if (nextSibling.classList.contains('songcard')) {
+      console.log(nextSibling.firstElementChild);
+      this.stopSong();
+      this.setState({
+        currentTrack: `${nextSibling.firstElementChild.id}`
+      }, () => {
+        this.playSong();
+      })
+    }
+
+    if (nextSibling.classList.contains('container__recommended__header')) {
+      console.log(nextSibling.nextSibling.firstElementChild);
+      this.stopSong();
+      this.setState({
+        currentTrack: `${nextSibling.nextSibling.firstElementChild.id}`
+      }, () => {
+        this.playSong();
+      })
+    }
   }
 
   playNext = () => {
-    const { currentTrack, playBackState } = this.state;
-    const currentSong = document.getElementById(currentTrack);
+    const nextSibling = document.getElementById(this.state.currentTrack).parentElement.nextElementSibling;
+    
+    if (this.state.loop) {
+      return this.playSong()
+    }
 
-    if (currentSong.parentElement.nextSibling !== null) {
-      if (currentSong.parentElement.nextSibling.classList.contains('controls')) {
-        if (playBackState !== 'ended') {
-          return;
-        }
-        return this.setState({
-          currentTrack: Array.from(document.getElementsByTagName('audio'))[0].id
-        })
-      }
+    if (this.state.shuffle) {
+      return this.musicShuffler()
+    }
 
-      if (currentSong.parentElement.nextElementSibling.classList.contains('container__recommended__header')) {
-        const nextSongCard = currentSong.parentElement.nextElementSibling.nextElementSibling;
-        this.stopSong();
-        this.handleNextPrevStateTransition(nextSongCard)
-      }
+    if (nextSibling.classList.contains('controls')) {
+      return;
+    }
 
-      if (currentSong.parentElement.nextSibling.classList.contains('songcard')) {
-        const nextSongCard = currentSong.parentElement.nextSibling;
-        this.stopSong();
-        this.handleNextPrevStateTransition(nextSongCard)
-      }
+    if (nextSibling.classList.contains('songcard')) {
+      console.log(nextSibling.firstElementChild);
+      this.setState({
+        currentTrack: `${nextSibling.firstElementChild.id}`
+      }, () => {
+        this.playSong();
+      })
+    }
+
+    if (nextSibling.classList.contains('container__recommended__header')) {
+      console.log(nextSibling.nextSibling.firstElementChild);
+      this.setState({
+        currentTrack: `${nextSibling.nextSibling.firstElementChild.id}`
+      }, () => {
+        this.playSong();
+      })
     }
   }
 
   playPrev = () => {
-    const { currentTrack} = this.state;
-    const currentSong = document.getElementById(currentTrack);
-    
-    if (currentSong.parentElement.previousSibling !== null) {
-      if (currentSong.parentElement.previousSibling.classList.contains('container__board')) {
-        return;
-      }
+    const nextSibling = document.getElementById(this.state.currentTrack).parentElement.previousElementSibling;
+  
+    if (nextSibling.classList.contains('songcard')) {
+      console.log(nextSibling.firstElementChild);
+      this.setState({
+        currentTrack: `${nextSibling.firstElementChild.id}`
+      }, () => {
+        this.playSong();
+      })
+    }
 
-      if (currentSong.parentElement.previousSibling.classList.contains('container__recommended__header')) {
-        const prevSongCard = currentSong.parentElement.previousSibling.previousSibling;
-        this.stopSong();
-        this.handleNextPrevStateTransition(prevSongCard)
-      }
-
-      if (currentSong.parentElement.previousSibling.classList.contains('songcard')) {
-        const prevSongCard = currentSong.parentElement.previousSibling;
-        this.stopSong();
-        this.handleNextPrevStateTransition(prevSongCard)
-      }
+    if (nextSibling.classList.contains('container__recommended__header')) {
+      console.log(nextSibling.previousElementSibling.firstElementChild);
+      this.setState({
+        currentTrack: `${nextSibling.previousElementSibling.firstElementChild.id}`
+      }, () => {
+        this.playSong();
+      })
     }
   }
 
   playPause = (event) => {
-    console.log(event.target.classList)
     if (event.target.classList.contains(`play`)) {
-      console.log(event.target)
-
       if (this.state.currentTrack !== event.target.dataset.songmatch 
         && this.state.currentTrack !== null) {
         this.stopSong();
@@ -138,7 +150,16 @@ class Container extends Component {
   }
 
   playSong = () => {
-    this.setState({ initiallyPlaying: true })
+    Array.from(document.getElementsByTagName('audio')).forEach(audio => {
+      if (audio.id !== this.state.currentTrack) {
+        audio.load();
+        audio.pause();
+      }
+    });
+    this.setState({ 
+      initiallyPlaying: true,
+      songPlaying: true
+    })
     document.getElementById(this.state.currentTrack).play().then(() => {
       console.log(document.getElementById(this.state.currentTrack).duration)
       console.log(document.getElementById(this.state.currentTrack).currentTime)
@@ -152,20 +173,21 @@ class Container extends Component {
 
   stopSong = () => {
     const { currentTrack } = this.state;
-    document.getElementById(currentTrack).load()
-    document.getElementById(currentTrack).pause()
+    if (document.getElementById(currentTrack) !== null) {
+      document.getElementById(currentTrack).load()
+      document.getElementById(currentTrack).pause();
+    }
   }
 
   setSearchTerm = (event) => {
     if (event.key === 'Enter') {
       event.target.blur();
-      const playingSongs = this.state.searchedTracks.filter(track => track.id === this.state.currentTrack);
-      console.log(playingSongs);
-      if (playingSongs.length > 0) {
+      const playingSearched = this.state.searchedTracks.filter(track => track.id === this.state.currentTrack);
+      if (playingSearched.length !== 0) {
         this.setState({
-          songPlaying: false,
           currentTrack: artists[0].id,
           playBackState: 'ended',
+          songPlaying: false,
           initiallyPlaying: false
         })
       }
@@ -173,7 +195,8 @@ class Container extends Component {
         searchTerm: event.target.value,
         boardData: null,
         searchedTracks: [],
-        noArtistFound: false
+        noArtistFound: false,
+        tracks: [...artists]
       }, () => {
         this.fetchArtist();
       })
@@ -186,7 +209,7 @@ class Container extends Component {
       audio.preload = "auto";
       audio.addEventListener('error', (e) => {
         console.log(e, 'there was an error playing the video')
-      })
+      });
       audio.addEventListener('waiting', () => {
         this.setState({ playBackState: 'waiting' })
       });
@@ -194,24 +217,15 @@ class Container extends Component {
         this.setState({ playBackState: 'playing' })
       });
       audio.addEventListener('ended', () => {
-        this.setState({ 
-          playBackState: 'ended',
-          songPlaying: false,
-        }, () => {
-          if (this.state.loop) {
-            return this.setState({
-              songPlaying: true
-            }, () => {
-              return this.playSong();
-            })
-          }
-
-          if (this.state.shuffle) {
-            return this.musicShuffler();
-          }
-
-          this.playNext()
-        })
+        if (document.getElementById(this.state.currentTrack).currentTime === document.getElementById(this.state.currentTrack).duration) {
+          this.setState({ 
+            playBackState: 'ended',
+            songPlaying: false,
+            initiallyPlaying: false
+          }, () => {
+            this.playNext();
+          })
+        }
       });
     })
   }
@@ -233,67 +247,38 @@ class Container extends Component {
   }
 
   musicShuffler = () => {
-    const rando = this.state.tracks[Math.floor(Math.random()*this.state.tracks.length)]
-    if (document.getElementById(rando) !== null) {
-      return this.setState({
-        currentTrack: rando.id,
-        songPlaying: true
-      }, () => {
-        return this.playSong();
-      })
-    }
-
-    if (document.getElementById(rando) === null) {
-      const rando = this.state.tracks[Math.floor(Math.random()*this.state.tracks.length)]
-      return this.setState({
-        currentTrack: rando.id,
-        songPlaying: true
-      }, () => {
-        return this.playSong();
-      })
-    }
+    const audioArray = Array.from(document.getElementsByTagName('audio'));
+    const rando = audioArray[Math.floor(Math.random()*this.state.tracks.length)]
+    this.setState({
+      currentTrack: rando.id
+    }, () => {
+      this.playSong();
+    })
   }
 
   fetchArtist = () => {
     const { searchTerm } = this.state;
     axios.get(`https://spotify-api-wrapper.appspot.com/artist/${searchTerm}`)
     .then(res => {
-      //console.log(res)
-      if (res.data) {
-        if (res.data.artists.items.length > 0) {
-          return this.setState({
-            boardData: res.data.artists.items[0]
-          }, () => {
-            const { boardData } = this.state;
-            axios.get( `https://spotify-api-wrapper.appspot.com/artist/${boardData.id}/top-tracks`)
-              .then(res => {
-                if (res.data.tracks) {
-                  //console.log(res.data.tracks)
-                  if (this.state.initialVisit) {
-                    if (!this.state.songPlaying) {
-                      this.setState({
-                        currentTrack: res.data.tracks[0].id,
-                        initialVisit: false
-                      })
-                    }
-
-                    this.setState({ initialVisit: false })
-                  }
-
-                  this.setState({ 
-                    searchedTracks: res.data.tracks,
-                    tracks: [...res.data.tracks, ...artists]
-                  }, () => {
-                    const { addEventListeners } = this;
-                    addEventListeners();
-                  })
-                }
-              })
-          })
-        }
-
+      if (res.data.artists.items.length > 0) {
         return this.setState({
-          noArtistFound: true
+          boardData: res.data.artists.items[0]
+        }, () => {
+          const { boardData } = this.state;
+          axios.get( `https://spotify-api-wrapper.appspot.com/artist/${boardData.id}/top-tracks`)
+            .then(res => {
+              if (res.data.tracks) {
+                this.setState({
+                  searchedTracks: res.data.tracks,
+                  tracks: [...res.data.tracks, ...artists],
+                }, () => {
+                  const { addEventListeners } = this;
+                  addEventListeners();
+                })
+              }
+            }).catch(err => {
+              console.log(err)
+            })
         })
       }
     }).catch(err => {
@@ -393,8 +378,8 @@ class Container extends Component {
       playPrev, 
       togglePauseState,
       handleLoop,
-      manuallyMoveToNextSong,
-      toggleShuffle
+      toggleShuffle,
+      playNextManually
     } = this;
     const { 
       songPlaying,
@@ -435,9 +420,9 @@ class Container extends Component {
       currentTrack={currentTrack}
       loop={loop}
       handleLoop={handleLoop}
-      manuallyMoveToNextSong={manuallyMoveToNextSong}
       shuffle={shuffle}
-      toggleShuffle={toggleShuffle}/>
+      toggleShuffle={toggleShuffle}
+      playNextManually={playNextManually}/>
     </div>
     )
   }
