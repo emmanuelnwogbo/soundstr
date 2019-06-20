@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import Utils from '../../helpers/Utils';
+import Utils from '../helpers/Utils';
 const { convertSeconds } = Utils;
 
 class Slider extends Component {

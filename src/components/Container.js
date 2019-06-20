@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import axios from "axios";
+import '../scss/components/container.scss'
 
-import artists from '../../db';
-import rainbowGenerator from '../../helpers/rainbow';
+import artists from '../db';
+import rainbowGenerator from '../helpers/rainbow';
 
 import Board from './Board';
 import SongCard from './SongCard';

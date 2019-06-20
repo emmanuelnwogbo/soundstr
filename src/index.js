@@ -1,15 +1,9 @@
-import express from 'express';
-import renderer from './helpers/renderer';
-import createStore from './helpers/createStore';
+import './scss/main.scss';
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-const app = express();
+import Container from './components/Container';
 
-app.use(express.static('public'));
-app.get('/', (req, res) => {
-  const store = createStore();
-  res.send(renderer(store));
-});
-
-app.listen(3000, () => {
-  console.log('listening on PORT 3000')
-});
+ReactDOM.hydrate(
+  <Container />, 
+  document.getElementById('root'))

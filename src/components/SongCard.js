@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Audio from './Audio';
+import '../scss/components/songcard.scss';
 
 class SongCard extends Component {
   constructor(props) {

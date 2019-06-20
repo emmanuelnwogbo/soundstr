@@ -1,4 +1,14 @@
-module.exports = {
+const webpack = require('webpack');
+const path = require('path');
+const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+
+const config = {
+  entry: './src/index.js',
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: '[name].[hash].js'
+  },
   module: {
     rules: [
       {
@@ -47,4 +57,35 @@ module.exports = {
       }
     ]
   },
-};
+  resolve: {
+    extensions: [
+      '.js',
+      '.jsx'
+    ]
+  },
+  devServer: {
+    contentBase: './src',
+    port: 8000
+  },
+  plugins: [
+    new LodashModuleReplacementPlugin,
+    new HtmlWebpackPlugin({
+      filename: "index.html",
+      template: "./src/index.html"
+    })
+  ],
+  optimization: {
+    runtimeChunk: 'single',
+    splitChunks: {
+      cacheGroups: {
+        vendor: {
+          test: /[\\\/]node_modules[\\\/]/,
+          name: 'vendors',
+          chunks: 'all'
+        }
+      }
+    }
+  }
+}
+
+module.exports = config;

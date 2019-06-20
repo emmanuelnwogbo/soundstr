@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import Slider from './Slider';
 
+import '../scss/components/controls.scss';
+
 class Controls extends Component {
   constructor(props) {
     super(props);
