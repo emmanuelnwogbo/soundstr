@@ -110,7 +110,8 @@ class Slider extends Component {
             width: '2rem',
             top: '0',
             right: '-1rem',
-            background: '#fff'
+            background: '#fff',
+            cursor: 'pointer'
           }}></div>
           <div style={{
             position: 'absolute',
