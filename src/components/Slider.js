@@ -87,7 +87,8 @@ class Slider extends Component {
         }}>{this.state.currentTimeDisplay}</span>
         <div style={{
           position: 'relative',
-          width: '100%'
+          width: '100%',
+          height: '.5rem'
         }} className={`controls__slider--content`}>
           <div style={{
             position: 'absolute',
@@ -119,8 +120,10 @@ class Slider extends Component {
           type='range'
           onChange={this.changeValue}
           style={{
-            position: 'relative',
-            zIndex: '12'
+            position: 'absolute',
+            zIndex: '12',
+            top: '0',
+            left: '0'
           }} className={`controls__slider--input`}></input>
         </div>
         <span style={{
