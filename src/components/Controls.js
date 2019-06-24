@@ -66,12 +66,14 @@ class Controls extends Component {
           const src = track.artist_albumart_link || track.album.images[2].url
           if (track.id === this.props.currentTrack) {
             return <img src={src} data-id={`${track.id}`} key={track.id} style={{
-              zIndex: '30'
+              zIndex: '30',
+              opacity: '1'
             }}/>
           }
 
           return <img src={src} data-id={`${track.id}`} key={track.id} style={{
-            zIndex: '10'
+            zIndex: '10',
+            opacity: 0
           }}/>
         }
       }

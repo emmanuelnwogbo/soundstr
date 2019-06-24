@@ -22,12 +22,17 @@
     width: 20%;
     text-overflow: ellipsis;
 
+    @media only screen and (max-width: 85em) {
+      width: 25%;
+    }
+
     & figure {
       position: relative;
       height: 7rem;
       width: 7rem;
       overflow: hidden;
       margin-right: 1.5rem;
+      flex-shrink: 0;
 
       & img {
         position: absolute;
@@ -45,6 +50,8 @@
       justify-content: center;
       flex-direction: column;
       line-height: 2rem;
+      flex-shrink: 0;    
+      width: 66%;
 
       & span {
         display: inline-block;

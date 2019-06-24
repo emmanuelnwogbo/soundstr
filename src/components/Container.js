@@ -1,13 +1,24 @@
-import React, { Component } from 'react';
+import React, { Suspense, lazy, Component } from 'react';
 import axios from "axios";
 import '../scss/components/container.scss'
 
 import artists from '../db';
 import rainbowGenerator from '../helpers/rainbow';
 
+const SongCard = lazy(() => import('./SongCard'));
 import Board from './Board';
-import SongCard from './SongCard';
 import Controls from './Controls'
+
+const songPlaceHolder = <div style={{
+  position: 'relative',
+  gridRow: 'span 16',
+  gridColumn: 'span 1',
+  height: '18rem',
+  width: '18rem',
+  borderRadius: '.3rem 3rem .3rem .3rem',
+  background: 'rgba(44, 62, 80,.7)'
+}}>
+</div>
 
 class Container extends Component {
   constructor(props) {
@@ -42,6 +53,9 @@ class Container extends Component {
       this.setState({
         currentTrack: `${nextSibling.firstElementChild.id}`
       }, () => {
+        if (!this.state.songPlaying) {
+          return;
+        }
         this.playSong();
       })
     }
@@ -52,6 +66,9 @@ class Container extends Component {
       this.setState({
         currentTrack: `${nextSibling.nextSibling.firstElementChild.id}`
       }, () => {
+        if (!this.state.songPlaying) {
+          return;
+        }
         this.playSong();
       })
     }
@@ -99,6 +116,9 @@ class Container extends Component {
       this.setState({
         currentTrack: `${nextSibling.firstElementChild.id}`
       }, () => {
+        if (!this.state.songPlaying) {
+          return;
+        }
         this.playSong();
       })
     }
@@ -108,6 +128,9 @@ class Container extends Component {
       this.setState({
         currentTrack: `${nextSibling.previousElementSibling.firstElementChild.id}`
       }, () => {
+        if (!this.state.songPlaying) {
+          return;
+        }
         this.playSong();
       })
     }
@@ -302,18 +325,20 @@ class Container extends Component {
     }
     return searchedTracks.map(track => {
       return (
-        <SongCard 
-        key={track.id} 
-        track={track}
-        overlay={rainbowGenerator(
-          Math.round(Math.random() * 100), 
-          Math.round(Math.random() * 80)
-        )}
-        playPause={this.playPause}
-        songPlaying={this.state.songPlaying}
-        currentTrack={this.state.currentTrack}
-        playBackState={this.state.playBackState}
-        />
+        <Suspense key={track.id} fallback={songPlaceHolder}>
+          <SongCard 
+          key={track.id} 
+          track={track}
+          overlay={rainbowGenerator(
+            Math.round(Math.random() * 100), 
+            Math.round(Math.random() * 80)
+          )}
+          playPause={this.playPause}
+          songPlaying={this.state.songPlaying}
+          currentTrack={this.state.currentTrack}
+          playBackState={this.state.playBackState}
+          />
+        </Suspense>
       )
     })
   }
@@ -322,18 +347,20 @@ class Container extends Component {
     const { recommendedArtists } = this.state;
     return recommendedArtists.map(artist => {
       return (
-        <SongCard 
-        key={artist.id} 
-        artist={artist}
-        overlay={rainbowGenerator(
-          Math.round(Math.random() * 100), 
-          Math.round(Math.random() * 80)
-        )}
-        playPause={this.playPause}
-        songPlaying={this.state.songPlaying}
-        currentTrack={this.state.currentTrack}
-        playBackState={this.state.playBackState}
-        />
+        <Suspense key={artist.id} fallback={songPlaceHolder}>
+          <SongCard 
+          key={artist.id} 
+          artist={artist}
+          overlay={rainbowGenerator(
+            Math.round(Math.random() * 100), 
+            Math.round(Math.random() * 80)
+          )}
+          playPause={this.playPause}
+          songPlaying={this.state.songPlaying}
+          currentTrack={this.state.currentTrack}
+          playBackState={this.state.playBackState}
+          />
+        </Suspense>
       )
     })
   }
