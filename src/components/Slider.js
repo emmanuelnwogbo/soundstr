@@ -44,11 +44,21 @@ class Slider extends Component {
           })
           document.getElementById(this.state.currentTrack).addEventListener('timeupdate', () => {
             const { currentTime, duration } = document.getElementById(this.state.currentTrack);
+            let dura = `${convertSeconds(Math.floor(duration))}`;
+            if (dura === 'NaN:NaN') {
+              return this.setState({
+                currentTime, 
+                duration,
+                currentTimeDisplay: `${convertSeconds(Math.floor(currentTime))}`,
+                durationDisplay: '0:00',
+                playPercent: `${this.state.transparentProgressWidth * (currentTime / duration)}`
+             })
+            }
             this.setState({
                currentTime, 
                duration,
                currentTimeDisplay: `${convertSeconds(Math.floor(currentTime))}`,
-               durationDisplay: `${convertSeconds(Math.floor(duration))}`,
+               durationDisplay: (duration === 'NaN:NaN') ? '0:00' : dura,
                playPercent: `${this.state.transparentProgressWidth * (currentTime / duration)}`
             })
           })

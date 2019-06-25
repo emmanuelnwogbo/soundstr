@@ -173,6 +173,20 @@ class Container extends Component {
     return this.setState({ songPlaying: true });
   }
 
+  spaceBarControl = (event) => {
+    event.preventDefault();
+
+    if (event.code === 'Space') {
+      if (this.state.songPlaying) {
+        this.togglePauseState()
+        return this.pauseSong();
+      }
+
+      this.togglePauseState()
+      return this.playSong();
+    }
+  }
+
   playSong = () => {
     Array.from(document.getElementsByTagName('audio')).forEach(audio => {
       if (audio.id !== this.state.currentTrack) {
@@ -180,6 +194,9 @@ class Container extends Component {
         audio.pause();
       }
     });
+    
+    window.addEventListener('keydown', this.spaceBarControl, true);
+
     this.setState({ 
       initiallyPlaying: true,
       songPlaying: true
@@ -426,7 +443,8 @@ class Container extends Component {
             <input 
             className={`container__header__inputfield--input`} 
             placeholder={`Find an Artist`}
-            onKeyDown={this.setSearchTerm}/>
+            onKeyDown={this.setSearchTerm}
+            onFocus={() => window.removeEventListener('keydown', this.spaceBarControl, true)}/>
           </div>
       </div>
       {this.renderNotFound()}
