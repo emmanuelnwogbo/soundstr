@@ -6,6 +6,7 @@ import artists from '../db';
 import rainbowGenerator from '../helpers/rainbow';
 
 const SongCard = lazy(() => import('./SongCard'));
+const MobileSongCard = lazy(() => import('./MobileSongCard'));
 import Board from './Board';
 import Controls from './Controls'
 
@@ -36,8 +37,37 @@ class Container extends Component {
       tracks: [...artists],
       noArtistFound: false,
       loop: false,
-      shuffle: false
+      shuffle: false,
+      currentTrackMobile: null,
+      songPlayingMobile: false
     }
+  }
+
+  setMobilePlayState = (trackId) => {
+    if (this.state.songPlayingMobile) {
+      return this.setState({
+        songPlayingMobile: false,
+        currentTrackMobile: trackId
+      }, () => this.pauseMobileSong());
+    }
+
+    return this.setState({
+      songPlayingMobile: true,
+      currentTrackMobile: trackId
+    }, () => this.playMobileSong());
+  }
+
+  playMobileSong = () => {
+    const { currentTrackMobile } = this.state;
+    document.getElementById(currentTrackMobile).play();
+    document.getElementById(currentTrackMobile).addEventListener('ended', () => {
+      this.setState({ songPlayingMobile: false })
+    })
+  }
+
+  pauseMobileSong = () => {
+    const { currentTrackMobile } = this.state;
+    document.getElementById(currentTrackMobile).pause();
   }
 
   playNextManually = () => {
@@ -411,9 +441,38 @@ class Container extends Component {
     return;
   }
 
+  renderMobileSearchedSongs = () => {
+    const { searchedTracks, noArtistFound } = this.state;
+    if (searchedTracks.length === 0 && !noArtistFound) {
+      return (
+        <div className={`container__loading`}>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      )
+    }
+
+    return searchedTracks.map(track => {
+      return (
+        <Suspense key={track.id} fallback={songPlaceHolder}>
+          <MobileSongCard 
+          setMobilePlayState={this.setMobilePlayState}
+          songPlayingMobile={this.state.songPlayingMobile}
+          key={track.id} 
+          track={track}
+          overlay={rainbowGenerator(
+            Math.round(Math.random() * 100), 
+            Math.round(Math.random() * 80)
+          )}/>
+        </Suspense>
+      )
+    })
+  }
+
   componentDidMount() {
     this.fetchArtist();
-    console.log(window.matchMedia('(max-width: 600px)'))
   }
 
   render() {
@@ -437,7 +496,9 @@ class Container extends Component {
 
     if (window.matchMedia('(max-width: 600px)').matches) {
       return (
-        <div>hello mobile view</div>
+        <div className={'container__mobile'}>
+          {this.renderMobileSearchedSongs()}
+        </div>
       )
     }
     return (
