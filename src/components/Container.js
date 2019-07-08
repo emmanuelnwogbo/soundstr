@@ -413,6 +413,7 @@ class Container extends Component {
 
   componentDidMount() {
     this.fetchArtist();
+    console.log(window.matchMedia('(max-width: 600px)'))
   }
 
   render() {
@@ -433,6 +434,12 @@ class Container extends Component {
       loop,
       shuffle
      } = this.state;
+
+    if (window.matchMedia('(max-width: 600px)').matches) {
+      return (
+        <div>hello mobile view</div>
+      )
+    }
     return (
       <div className={`container`}>
         <div className={`container__header`}>
