@@ -4,6 +4,7 @@
   flex-shrink: 0;
   height: 100%;
   overflow: hidden;
+  transition: all .1s ease-in;
 
   &__content {
     width: 100%;

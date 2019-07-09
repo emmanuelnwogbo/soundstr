@@ -47,6 +47,17 @@ class Container extends Component {
   }
 
   setMobilePlayState = (trackId) => {
+    if (this.state.currentTrackMobile !== null && this.state.currentTrackMobile !== trackId) {
+      this.pauseMobileSong();
+      return this.setState({
+        currentTrackMobile: trackId
+      }, () => {
+        if (this.state.songPlayingMobile) {
+          this.playMobileSong()
+        }
+      })
+    }
+
     if (this.state.songPlayingMobile) {
       return this.setState({
         songPlayingMobile: false,
@@ -56,12 +67,18 @@ class Container extends Component {
 
     return this.setState({
       songPlayingMobile: true,
-      currentTrackMobile: trackId
+      currentTrackMobile: trackId,
     }, () => this.playMobileSong());
   }
 
   playMobileSong = () => {
     const { currentTrackMobile } = this.state;
+    Array.from(document.getElementsByTagName('audio')).forEach(audio => {
+      if (audio.id !== currentTrackMobile) {
+        audio.pause();
+        audio.load();
+      }
+    });
     document.getElementById(currentTrackMobile).play();
     document.getElementById(currentTrackMobile).addEventListener('ended', () => {
       this.setState({ songPlayingMobile: false })
@@ -446,6 +463,7 @@ class Container extends Component {
 
   renderMobileSearchedSongs = () => {
     const { searchedTracks, noArtistFound } = this.state;
+    let tracker = 0;
     if (searchedTracks.length === 0 && !noArtistFound) {
       return (
         <div className={`container__loading`}>
@@ -458,9 +476,11 @@ class Container extends Component {
     }
 
     return searchedTracks.map(track => {
+      tracker+=1;
       return (
         <Suspense key={track.id} fallback={songPlaceHolder}>
           <MobileSongCard 
+          slide-tracker={tracker}
           setMobilePlayState={this.setMobilePlayState}
           songPlayingMobile={this.state.songPlayingMobile}
           currentTrackMobile={this.state.currentTrackMobile}
@@ -487,7 +507,7 @@ class Container extends Component {
             const manager = new Hammer.Manager(slider);
             const Swipe = new Hammer.Swipe();
             let totalLeftSwipes = 0;
-            let totalRightSwipes = 0;
+            //let totalRightSwipes = 0;
             let translateX = '';
             manager.add(Swipe);
             manager.on('swipeleft', event => {
@@ -502,6 +522,12 @@ class Container extends Component {
               totalLeftSwipes+=1;
               translateX = `${totalLeftSwipes}00`;
               if (totalLeftSwipes <= slider.children.length - 1) {
+                if (this.state.currentTrackMobile !== null) {
+                  const nextSong = document.getElementById(this.state.currentTrackMobile).parentElement.nextElementSibling.firstElementChild;
+                  if (nextSong !== null) {
+                    this.setMobilePlayState(nextSong.id);
+                  }
+                }
                 Array.from(document.getElementsByClassName('mobilesongcard')).forEach(item => {
                   item.style.transform = `translateX(-${translateX}%)`;
                 });
@@ -510,6 +536,12 @@ class Container extends Component {
             manager.on('swiperight', event => {
               //console.log(totalLeftSwipes, totalRightSwipes);
               if (totalLeftSwipes === 0 || totalLeftSwipes === 1) {
+                if (this.state.currentTrackMobile !== null) {
+                  const prevSong = document.getElementById(this.state.currentTrackMobile).parentElement.previousElementSibling.firstElementChild;
+                  if (prevSong !== null) {
+                    this.setMobilePlayState(prevSong.id);
+                  }
+                }
                 return Array.from(document.getElementsByClassName('mobilesongcard')).forEach(item => {
                   item.style.transform = `translateX(0)`;
                 });
