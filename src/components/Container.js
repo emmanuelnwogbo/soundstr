@@ -521,11 +521,14 @@ class Container extends Component {
 
               totalLeftSwipes+=1;
               translateX = `${totalLeftSwipes}00`;
+              console.log(totalLeftSwipes, 'after swiping left')
               if (totalLeftSwipes <= slider.children.length - 1) {
                 if (this.state.currentTrackMobile !== null) {
-                  const nextSong = document.getElementById(this.state.currentTrackMobile).parentElement.nextElementSibling.firstElementChild;
-                  if (nextSong !== null) {
-                    this.setMobilePlayState(nextSong.id);
+                  if (document.getElementById(this.state.currentTrackMobile).parentElement.nextElementSibling !== null) {
+                    const nextSong = document.getElementById(this.state.currentTrackMobile).parentElement.nextElementSibling.firstElementChild;
+                    if (nextSong !== null) {
+                      this.setMobilePlayState(nextSong.id);
+                    }
                   }
                 }
                 Array.from(document.getElementsByClassName('mobilesongcard')).forEach(item => {
@@ -533,22 +536,36 @@ class Container extends Component {
                 });
               }
             })
-            manager.on('swiperight', event => {
-              //console.log(totalLeftSwipes, totalRightSwipes);
-              if (totalLeftSwipes === 0 || totalLeftSwipes === 1) {
+            manager.on('swiperight', event => {  
+              if (totalLeftSwipes === 0) {
+                return;
+              }   
+
+              totalLeftSwipes-=1;
+              translateX = `${totalLeftSwipes}00`;
+              console.log(totalLeftSwipes, 'after swiping right');
+              if (totalLeftSwipes === 0) {
                 if (this.state.currentTrackMobile !== null) {
+                  if (document.getElementById(this.state.currentTrackMobile).parentElement.previousElementSibling !== null) {
+                    const prevSong = document.getElementById(this.state.currentTrackMobile).parentElement.previousElementSibling.firstElementChild;
+                    if (prevSong !== null) {
+                      this.setMobilePlayState(prevSong.id);
+                    }
+                  }
+                }
+                Array.from(document.getElementsByClassName('mobilesongcard')).forEach(item => {
+                  item.style.transform = `translateX(0)`;
+                });
+              }
+              
+              if (this.state.currentTrackMobile !== null) {
+                if (document.getElementById(this.state.currentTrackMobile).parentElement.previousElementSibling !== null) {
                   const prevSong = document.getElementById(this.state.currentTrackMobile).parentElement.previousElementSibling.firstElementChild;
                   if (prevSong !== null) {
                     this.setMobilePlayState(prevSong.id);
                   }
                 }
-                return Array.from(document.getElementsByClassName('mobilesongcard')).forEach(item => {
-                  item.style.transform = `translateX(0)`;
-                });
               }
-              
-              totalLeftSwipes-=1;
-              translateX = `${totalLeftSwipes}00`;
               if (totalLeftSwipes !== 0) {
                 Array.from(document.getElementsByClassName('mobilesongcard')).forEach(item => {
                   item.style.transform = `translateX(-${translateX}%)`;
