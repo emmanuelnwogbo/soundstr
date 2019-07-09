@@ -1,5 +1,7 @@
 import React, { Suspense, lazy, Component } from 'react';
 import axios from "axios";
+//import Hammer from 'hammerjs';
+
 import '../scss/components/container.scss'
 
 import artists from '../db';
@@ -39,7 +41,8 @@ class Container extends Component {
       loop: false,
       shuffle: false,
       currentTrackMobile: null,
-      songPlayingMobile: false
+      songPlayingMobile: false,
+      Hammer: false
     }
   }
 
@@ -473,6 +476,56 @@ class Container extends Component {
 
   componentDidMount() {
     this.fetchArtist();
+    if (window.matchMedia('(max-width: 600px)').matches) {
+      import('hammerjs').then(result => {
+        this.setState({ Hammer: result.default }, () => {
+          const { Hammer } = this.state;
+
+          if (Hammer) {
+            const slider = document.getElementById('mobile-slider');
+            const manager = new Hammer.Manager(slider);
+            const Swipe = new Hammer.Swipe();
+            let totalLeftSwipes = 0;
+            let totalRightSwipes = 0;
+            let translateX = '';
+            manager.add(Swipe);
+            manager.on('swipeleft', event => {
+              //console.log(event);
+              //console.log(slider.children.length, (slider.children.length - 1) * 100)
+              //console.log('swiped left');
+              
+              if (totalLeftSwipes === slider.children.length - 1) {
+                return;
+              }
+
+              totalLeftSwipes+=1;
+              translateX = `${totalLeftSwipes}00`;
+              if (totalLeftSwipes <= slider.children.length - 1) {
+                Array.from(document.getElementsByClassName('mobilesongcard')).forEach(item => {
+                  item.style.transform = `translateX(-${translateX}%)`;
+                });
+              }
+            })
+            manager.on('swiperight', event => {
+              //console.log(totalLeftSwipes, totalRightSwipes);
+              if (totalLeftSwipes === 0 || totalLeftSwipes === 1) {
+                return Array.from(document.getElementsByClassName('mobilesongcard')).forEach(item => {
+                  item.style.transform = `translateX(0)`;
+                });
+              }
+              
+              totalLeftSwipes-=1;
+              translateX = `${totalLeftSwipes}00`;
+              if (totalLeftSwipes !== 0) {
+                Array.from(document.getElementsByClassName('mobilesongcard')).forEach(item => {
+                  item.style.transform = `translateX(-${translateX}%)`;
+                });
+              }
+            })
+          }
+        })
+      })
+    }
   }
 
   render() {
@@ -496,7 +549,7 @@ class Container extends Component {
 
     if (window.matchMedia('(max-width: 600px)').matches) {
       return (
-        <div className={'container__mobile'}>
+        <div className={'container__mobile'} id={'mobile-slider'}>
           {this.renderMobileSearchedSongs()}
         </div>
       )

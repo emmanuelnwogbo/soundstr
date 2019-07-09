@@ -19,4 +19,8 @@ body {
   //overflow-y: hidden;
   overflow-x: hidden;
   background: linear-gradient(to right, #302B63, #0F0C29);
+
+  @media only screen and (max-width: 37.5em) {
+    overflow-y: hidden;
+  }
 }

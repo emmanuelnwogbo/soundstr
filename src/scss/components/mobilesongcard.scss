@@ -65,10 +65,15 @@
 
       & h3 {
         font-size: 3rem;
+        color: #d63031;
+        padding: .5rem;
+        background: #000000;
+        border-radius: .3rem 3rem;
       }
 
       & p {
         font-size: 2rem;
+        padding: .5rem 1rem;
       }
     }
   }
