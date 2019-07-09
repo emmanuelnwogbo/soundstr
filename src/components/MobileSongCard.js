@@ -12,9 +12,10 @@ class MobileSongCard extends Component {
   }
 
   returnPlayPauseBtn = () => {
-    if (this.props.songPlayingMobile) {
+    if (this.props.songPlayingMobile && this.props.currentTrackMobile === `${this.props.track.id}${'123'}`) {
       return (
-        <svg className={'mobilesongcard__controls--svg'} onClick={() => this.props.setMobilePlayState(`${this.props.track.id}${'123'}`)}>
+        <svg className={'mobilesongcard__controls--svg'} 
+        onClick={() => this.props.setMobilePlayState(`${this.props.track.id}${'123'}`)}>
           <use xlinkHref="./sprite.svg#icon-pause"/>
         </svg>     
       )      

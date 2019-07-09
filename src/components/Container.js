@@ -463,6 +463,7 @@ class Container extends Component {
           <MobileSongCard 
           setMobilePlayState={this.setMobilePlayState}
           songPlayingMobile={this.state.songPlayingMobile}
+          currentTrackMobile={this.state.currentTrackMobile}
           key={track.id} 
           track={track}
           overlay={rainbowGenerator(

@@ -13,6 +13,14 @@ html {
   @media only screen and (max-width: 50em) {
     font-size: 61%;
   }
+
+  @media only screen and (min-width: 143.75em) {
+    font-size: 80%;
+  }
+
+  @media only screen and (min-width: 187.5em) {
+    font-size: 100%;
+  }
 }
 
 body {
